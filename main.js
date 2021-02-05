@@ -123,6 +123,11 @@ let getAttr = () => {
   }
 }
 
+let checkRightTagName = () => {
+  isTagNameRight = /\W/.test(tagName) + /\d/.test(tagName) + /-/.test(tagName);
+  console.log(isTagNameRight)
+};
+
 let getOpennigTag = () => {
   getTrimmedString()
   if (trimmedString[0] !== signs[1]) {
@@ -133,18 +138,21 @@ let getOpennigTag = () => {
     getIndexOfChar(trimmedString, ' ');
     indexOfSpace = indexOfChar;
     if (indexOfSpace === -1) {
-      outputJavaScript.value += ` tag without attributes `;
       if (trimmedString[trimmedString.length - 1] == '>') {
         opennigTag = trimmedString.slice(1, trimmedString.length - 1);
         tagName = opennigTag;
         createDOMElement();
       }
     } else {
-       console.log(indexOfSpace);
        opennigTag = trimmedString.slice(1, indexOfSpace);
        tagName = opennigTag;
-       createDOMElement();
-       getAttr();
+       checkRightTagName();
+       if (!isTagNameRight) {
+        createDOMElement();
+        getAttr();
+       } else {
+          outputJavaScript.value += `Incorrect tag name`;
+       }
     }
   }
 }
