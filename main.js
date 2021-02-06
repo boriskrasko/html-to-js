@@ -16,7 +16,7 @@ let classesCount = 0;
 let className;
 let classContentBeforeTrimming;
 
-inputHtml.value = `<div class="container flex-box greeting">          
+inputHtml.value = `<div class="container flex-box greeting" id="art">          
  <h1 class="title"></h1>
  <h2 class="subtitle hello"></h2>
  <ul class="list items">
@@ -61,7 +61,10 @@ let checkClass = () => {
 }
 
 let getClassContent =  () => {
- classContent = trimmedString.slice(trimmedString.indexOf('="') + 2, trimmedString.lastIndexOf('"'));
+ let startIndex = trimmedString.indexOf('="') + 2;
+ trimmedString = trimmedString.replace(/ +"/g, '"').trim();
+  console.log(classContent);
+ classContent = trimmedString.slice(startIndex , trimmedString.indexOf('"', startIndex));
 }
 
 let removeExtraSpacesFromClassContent = () => {
@@ -106,7 +109,8 @@ let addClassToElement = () => {
   outputJavaScript.value += `name.classList.add('${className}');\n`;
   trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
   console.log(trimmedString);
-  addChildToParrent();
+  checkAttributes();
+  // addChildToParrent();
 }
 
 let getClassName = () => {
@@ -128,6 +132,7 @@ let getClassNames = () => {
 let getAttr = () => {
   checkClass();
   if (hasClass) {
+    console.log(`yes`)
     checkClassesCount();
     if (classesCount === 1) {
       getClassName();
