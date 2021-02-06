@@ -18,12 +18,17 @@ let classContentBeforeTrimming;
 
 inputHtml.value = `<div class="container flex-box greeting">          
  <h1 class="title"></h1>
- <h2 class="subtitle"></h2>
+ <h2 class="subtitle hello"></h2>
  <ul class="list items">
-  <li></li>
-  <li></li>
+  <li> </li>
+  <li> </li>
  </ul>
 </div>`;
+ // <h2 class="subtitle"></h2>
+ // <ul class="list items">
+ //  <li></li>
+ //  <li></li>
+ // </ul>
 
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
@@ -35,6 +40,7 @@ let getStringFromHtmlCode = () => {
 
 let removeFirstStringFromHtml = () => {
   inputHtml.value = inputHtml.value.replace(stringFromHtmlCode + signs[0], '');
+  getStringFromHtmlCode();
 }
 
 let getTrimmedString = () => {
@@ -79,16 +85,28 @@ let checkClassesCount = () => {
   }
 }
 
+let addChildToParrent = () => {
+ outputJavaScript.value += `parrent.appendChild(name)\n;`;
+ removeFirstStringFromHtml();
+ getLastCharOfString(inputHtml.value);
+ getStringFromHtmlCode();
+ getOpennigTag();
+}
+
 let checkAttributes = () => {
  hasAttr = (trimmedString.indexOf(`"`) !== -1) ? true : false;
  console.log(hasAttr);
+ if (hasAttr) {
+  getAttr();
+ } else {
+ }
 }
 
 let addClassToElement = () => {
   outputJavaScript.value += `name.classList.add('${className}');\n`;
   trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
   console.log(trimmedString);
-  checkAttributes();
+  addChildToParrent();
 }
 
 let getClassName = () => {
@@ -110,7 +128,6 @@ let getClassNames = () => {
 let getAttr = () => {
   checkClass();
   if (hasClass) {
-    console.log('has class');
     checkClassesCount();
     if (classesCount === 1) {
       getClassName();
@@ -119,21 +136,19 @@ let getAttr = () => {
     }
   } else {
     console.log('doesn`t class');
-    //
   }
 }
 
 let checkRightTagName = () => {
-  isTagNameRight = /\W/.test(tagName) + /\d/.test(tagName) + /-/.test(tagName);
-  console.log(isTagNameRight)
+  isTagNameRight = /\W/.test(tagName) + /-/.test(tagName);
 };
 
 let getOpennigTag = () => {
   getTrimmedString()
   if (trimmedString[0] !== signs[1]) {
-    outputJavaScript.value =  `Your code must start with the '<'`;
+    outputJavaScript.value =  `Your code must start with the '<'\n`;
   } else if (trimmedString[1] == signs[2]) {
-    outputJavaScript.value = `There can be no space after '<'`;
+    outputJavaScript.value = `There can be no space after '<'\n`;
   } else {
     getIndexOfChar(trimmedString, ' ');
     indexOfSpace = indexOfChar;
@@ -151,7 +166,7 @@ let getOpennigTag = () => {
         createDOMElement();
         getAttr();
        } else {
-          outputJavaScript.value += `Incorrect tag name`;
+          outputJavaScript.value += `Incorrect tag name\n`;
        }
     }
   }
@@ -160,7 +175,6 @@ let getOpennigTag = () => {
 getLastCharOfString(inputHtml.value);
 getStringFromHtmlCode();
 getOpennigTag();
-// removeFirstStringFromHtml();
 
 // console.log(stringFromHtmlCode);
 // console.log(inputHtml.value);
