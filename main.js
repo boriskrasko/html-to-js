@@ -15,8 +15,9 @@ let classContent;
 let classesCount = 0;
 let className;
 let classContentBeforeTrimming;
+let attrName;
 
-inputHtml.value = `<div class="container flex-box greeting" id="art">          
+inputHtml.value = `<div  id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block">          
  <h1 class="title"></h1>
  <h2 class="subtitle hello"></h2>
  <ul class="list items">
@@ -61,9 +62,9 @@ let checkClass = () => {
 }
 
 let getClassContent =  () => {
- let startIndex = trimmedString.indexOf('="') + 2;
+ let startIndex = trimmedString.indexOf('class="') + 7;
  trimmedString = trimmedString.replace(/ +"/g, '"').trim();
-  console.log(classContent);
+ console.log(classContent);
  classContent = trimmedString.slice(startIndex , trimmedString.indexOf('"', startIndex));
 }
 
@@ -89,11 +90,11 @@ let checkClassesCount = () => {
 }
 
 let addChildToParrent = () => {
- outputJavaScript.value += `parrent.appendChild(name)\n;`;
+ outputJavaScript.value += `parrent.appendChild(name);\n`;
  removeFirstStringFromHtml();
- getLastCharOfString(inputHtml.value);
- getStringFromHtmlCode();
- getOpennigTag();
+ // getLastCharOfString(inputHtml.value);
+ // getStringFromHtmlCode();
+ // getOpennigTag();
 }
 
 let checkAttributes = () => {
@@ -102,6 +103,7 @@ let checkAttributes = () => {
  if (hasAttr) {
   getAttr();
  } else {
+  addChildToParrent();
  }
 }
 
@@ -129,6 +131,28 @@ let getClassNames = () => {
   addClassesToElement();
 }
 
+let addIdToElement = () => {
+   outputJavaScript.value += `name.setAttribute('${attrName}', '${attrValue}');\n`;
+}
+
+let getAttrValue = () => {
+  let startIndex = trimmedString.indexOf('="') + 2;
+  attrValue = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
+  console.log(attrValue);
+  trimmedString = trimmedString.replace(`${attrName}="${attrValue}"`, '');
+  console.log(trimmedString);
+  addIdToElement();
+  checkAttributes();
+}
+
+let getAttrName = () => {
+  console.log(trimmedString);
+  attrName = trimmedString.slice(trimmedString.indexOf(' ') + 1, trimmedString.indexOf('='));
+  attrName = attrName.trim();
+  console.log(attrName);
+  getAttrValue();
+}
+
 let getAttr = () => {
   checkClass();
   if (hasClass) {
@@ -141,6 +165,7 @@ let getAttr = () => {
     }
   } else {
     console.log('doesn`t class');
+    getAttrName();
   }
 }
 
