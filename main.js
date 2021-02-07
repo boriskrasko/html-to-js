@@ -15,8 +15,11 @@ let classContent;
 let classesCount = 0;
 let className;
 let classContentBeforeTrimming;
+let attrName;
+let hasClosingTag;
+let textContent;
 
-inputHtml.value = `<div class="container flex-box greeting" id="art">          
+inputHtml.value = `<div visibled id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block">The Times      
  <h1 class="title"></h1>
  <h2 class="subtitle hello"></h2>
  <ul class="list items">
@@ -61,9 +64,9 @@ let checkClass = () => {
 }
 
 let getClassContent =  () => {
- let startIndex = trimmedString.indexOf('="') + 2;
+ let startIndex = trimmedString.indexOf('class="') + 7;
  trimmedString = trimmedString.replace(/ +"/g, '"').trim();
-  console.log(classContent);
+ console.log(classContent);
  classContent = trimmedString.slice(startIndex , trimmedString.indexOf('"', startIndex));
 }
 
@@ -89,11 +92,43 @@ let checkClassesCount = () => {
 }
 
 let addChildToParrent = () => {
- outputJavaScript.value += `parrent.appendChild(name)\n;`;
+ outputJavaScript.value += `parrent.appendChild(name);\n`;
  removeFirstStringFromHtml();
- getLastCharOfString(inputHtml.value);
- getStringFromHtmlCode();
- getOpennigTag();
+ // getLastCharOfString(inputHtml.value);
+ // getStringFromHtmlCode();
+ // getOpennigTag();
+}
+
+let checkClosingTag = () => {
+  hasClosingTag = (trimmedString.indexOf('</') !== -1) ? true : false;
+  if (hasClosingTag) {
+    let startIndex = trimmedString.indexOf('</') + 2
+    closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
+    console.log(closingTagName);
+    if (closingTagName === tagName) {
+      console.log('closingTagName === tagName');
+    }
+  }
+}
+
+let addTextContentToElement = () => {
+  outputJavaScript.value += `name.textContent = '${textContent}';\n`;
+  addChildToParrent();
+}
+
+let checkTextContent = () => {
+ checkClosingTag();
+ let startIndex = trimmedString.indexOf('>') + 1;
+ if (hasClosingTag) {
+  textContent = trimmedString.slice(startIndex, trimmedString.indexOf('</', startIndex))
+ } else {
+   textContent = trimmedString.slice(startIndex, trimmedString.indexOf('\n', startIndex))
+ }
+ console.log(textContent);
+ addTextContentToElement();
+ if (textContent === '' || textContent === ' ') {
+  console.log('no text content');
+ }
 }
 
 let checkAttributes = () => {
@@ -102,6 +137,8 @@ let checkAttributes = () => {
  if (hasAttr) {
   getAttr();
  } else {
+  checkTextContent();
+  // addChildToParrent();
  }
 }
 
@@ -129,6 +166,29 @@ let getClassNames = () => {
   addClassesToElement();
 }
 
+let addIdToElement = () => {
+   outputJavaScript.value += `name.setAttribute('${attrName}', '${attrValue}');\n`;
+}
+
+let getAttrValue = () => {
+  let startIndex = trimmedString.indexOf('="') + 2;
+  attrValue = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
+  console.log(attrValue);
+  trimmedString = trimmedString.replace(`${attrName}="${attrValue}"`, '');
+  console.log(trimmedString);
+  addIdToElement();
+  checkAttributes();
+}
+
+let getAttrName = () => {
+  console.log(trimmedString);
+  let startIndex = trimmedString.indexOf('=');
+  attrName = trimmedString.slice(trimmedString.lastIndexOf(' ', startIndex - 2) + 1, startIndex);
+  attrName = attrName.trim();
+  console.log(attrName);
+  getAttrValue();
+}
+
 let getAttr = () => {
   checkClass();
   if (hasClass) {
@@ -141,6 +201,7 @@ let getAttr = () => {
     }
   } else {
     console.log('doesn`t class');
+    getAttrName();
   }
 }
 
