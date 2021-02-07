@@ -17,7 +17,7 @@ let className;
 let classContentBeforeTrimming;
 let attrName;
 
-inputHtml.value = `<div  id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block"> </div>         
+inputHtml.value = `<div visibled id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block"> </div>         
  <h1 class="title"></h1>
  <h2 class="subtitle hello"></h2>
  <ul class="list items">
@@ -160,7 +160,8 @@ let getAttrValue = () => {
 
 let getAttrName = () => {
   console.log(trimmedString);
-  attrName = trimmedString.slice(trimmedString.indexOf(' ') + 1, trimmedString.indexOf('='));
+  let startIndex = trimmedString.indexOf('=');
+  attrName = trimmedString.slice(trimmedString.lastIndexOf(' ', startIndex - 2) + 1, startIndex);
   attrName = attrName.trim();
   console.log(attrName);
   getAttrValue();
