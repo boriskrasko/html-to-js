@@ -17,7 +17,7 @@ let className;
 let classContentBeforeTrimming;
 let attrName;
 
-inputHtml.value = `<div  id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block">          
+inputHtml.value = `<div  id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block"> </div>         
  <h1 class="title"></h1>
  <h2 class="subtitle hello"></h2>
  <ul class="list items">
@@ -97,12 +97,25 @@ let addChildToParrent = () => {
  // getOpennigTag();
 }
 
+let checkClosingTag = () => {
+  hasClosingTag = (trimmedString.indexOf('</') !== -1) ? true : false;
+  if (hasClosingTag) {
+    let startIndex = trimmedString.indexOf('</') + 2
+    closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
+    console.log(closingTagName);
+    if (closingTagName === tagName) {
+      console.log('closingTagName === tagName');
+    }
+  }
+}
+
 let checkAttributes = () => {
  hasAttr = (trimmedString.indexOf(`"`) !== -1) ? true : false;
  console.log(hasAttr);
  if (hasAttr) {
   getAttr();
  } else {
+  checkClosingTag();
   addChildToParrent();
  }
 }
