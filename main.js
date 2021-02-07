@@ -111,6 +111,11 @@ let checkClosingTag = () => {
   }
 }
 
+let addTextContentToElement = () => {
+  outputJavaScript.value += `name.textContent = '${textContent}';\n`;
+  addChildToParrent();
+}
+
 let checkTextContent = () => {
  checkClosingTag();
  let startIndex = trimmedString.indexOf('>') + 1;
@@ -120,6 +125,7 @@ let checkTextContent = () => {
    textContent = trimmedString.slice(startIndex, trimmedString.indexOf('\n', startIndex))
  }
  console.log(textContent);
+ addTextContentToElement();
  if (textContent === '' || textContent === ' ') {
   console.log('no text content');
  }
