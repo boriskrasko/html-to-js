@@ -20,10 +20,10 @@ let hasClosingTag;
 let textContent;
 
 inputHtml.value = `<div visibled id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block">The Times      
- <h1 class="title"></h1>
+ <h1 class="title hello"></h1>
  <h2 class="subtitle hello"></h2>
  <ul class="list items">
-  <li> </li>
+  <li id="item"> </li>
   <li> </li>
  </ul>
 </div>`;
@@ -94,9 +94,9 @@ let checkClassesCount = () => {
 let addChildToParrent = () => {
  outputJavaScript.value += `parrent.appendChild(name);\n`;
  removeFirstStringFromHtml();
- // getLastCharOfString(inputHtml.value);
- // getStringFromHtmlCode();
- // getOpennigTag();
+ getLastCharOfString(inputHtml.value);
+ getStringFromHtmlCode();
+ getOpennigTag();
 }
 
 let checkClosingTag = () => {
@@ -125,9 +125,11 @@ let checkTextContent = () => {
    textContent = trimmedString.slice(startIndex, trimmedString.indexOf('\n', startIndex))
  }
  console.log(textContent);
- addTextContentToElement();
  if (textContent === '' || textContent === ' ') {
   console.log('no text content');
+  addChildToParrent();
+ } else {
+  addTextContentToElement();
  }
 }
 
@@ -206,7 +208,8 @@ let getAttr = () => {
 }
 
 let checkRightTagName = () => {
-  isTagNameRight = /\W/.test(tagName) + /-/.test(tagName);
+  // isTagNameRight = /\W/.test(tagName) + /-/.test(tagName);
+  isTagNameRight = false;
 };
 
 let getOpennigTag = () => {
@@ -219,11 +222,9 @@ let getOpennigTag = () => {
     getIndexOfChar(trimmedString, ' ');
     indexOfSpace = indexOfChar;
     if (indexOfSpace === -1) {
-      if (trimmedString[trimmedString.length - 1] == '>') {
         opennigTag = trimmedString.slice(1, trimmedString.length - 1);
         tagName = opennigTag;
         createDOMElement();
-      }
     } else {
        opennigTag = trimmedString.slice(1, indexOfSpace);
        tagName = opennigTag;
