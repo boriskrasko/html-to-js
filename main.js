@@ -16,8 +16,10 @@ let classesCount = 0;
 let className;
 let classContentBeforeTrimming;
 let attrName;
+let hasClosingTag;
+let textContent;
 
-inputHtml.value = `<div visibled id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block"> </div>         
+inputHtml.value = `<div visibled id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block">The Times      
  <h1 class="title"></h1>
  <h2 class="subtitle hello"></h2>
  <ul class="list items">
@@ -109,14 +111,28 @@ let checkClosingTag = () => {
   }
 }
 
+let checkTextContent = () => {
+ checkClosingTag();
+ let startIndex = trimmedString.indexOf('>') + 1;
+ if (hasClosingTag) {
+  textContent = trimmedString.slice(startIndex, trimmedString.indexOf('</', startIndex))
+ } else {
+   textContent = trimmedString.slice(startIndex, trimmedString.indexOf('\n', startIndex))
+ }
+ console.log(textContent);
+ if (textContent === '' || textContent === ' ') {
+  console.log('no text content');
+ }
+}
+
 let checkAttributes = () => {
  hasAttr = (trimmedString.indexOf(`"`) !== -1) ? true : false;
  console.log(hasAttr);
  if (hasAttr) {
   getAttr();
  } else {
-  checkClosingTag();
-  addChildToParrent();
+  checkTextContent();
+  // addChildToParrent();
  }
 }
 
