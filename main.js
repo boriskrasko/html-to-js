@@ -19,17 +19,6 @@ let attrName;
 let hasClosingTag;
 let textContent;
 
-inputHtml.value = `<div visibled id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block">The Times  
- <p></p>    
- <h1 class="title hello"></h1>
- <h2 class="subtitle"></h2>
- <h2 class="subtitle hello"></h2>
- <ul class="list items">ToDo  
-  <li class="item   "> Call mom</li>
-  <li> Buy laptop</li>
- </ul>
-</div>`;
-
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
 }
@@ -210,9 +199,9 @@ let getOpennigTag = () => {
   getTrimmedString()
   trimmedString = trimmedString.replace('>', ' >');
   if (trimmedString[0] !== signs[1]) {
-    outputJavaScript.value =  `Your code must start with the '<'\n`;
+    outputJavaScript.value +=  `Your code must start with the '<'\n`;
   } else if (trimmedString[1] == signs[2]) {
-    outputJavaScript.value = `There can be no space after '<'\n`;
+    outputJavaScript.value += `There can be no space after '<'\n`;
   } else {
     getIndexOfChar(trimmedString, ' ');
     indexOfSpace = indexOfChar;
@@ -237,9 +226,9 @@ let getOpennigTag = () => {
   }
 }
 
-getLastCharOfString(inputHtml.value);
-getStringFromHtmlCode();
-getOpennigTag();
-
-// console.log(stringFromHtmlCode);
-// console.log(inputHtml.value);
+convertBtn.addEventListener('click', () => {
+  inputHtml.value += '\n//';
+  getLastCharOfString(inputHtml.value);
+  getStringFromHtmlCode();
+  getOpennigTag();
+})
