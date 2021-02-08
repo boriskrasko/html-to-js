@@ -18,9 +18,22 @@ let classContentBeforeTrimming;
 let attrName;
 let hasClosingTag;
 let textContent;
+let name;
+let parent;
+let tagToClose;
+let randomId;
 
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
+}
+
+let createId = (length) => {
+  randomId = ``;
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  for (let i = 0; i < length; i++) {
+    randomId += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return randomId;
 }
 
 let getStringFromHtmlCode = () => {
@@ -40,9 +53,27 @@ let getIndexOfChar = (str, char) => {
   indexOfChar = str.indexOf(char);
 }
 
+let getParent = () => {
+  checkClosingTag();
+  if (!hasClosingTag) {
+    tagToClose = tagName;
+    console.log('tagToClose = ' + tagToClose);
+    parent = name;
+  } else {
+     if (closingTagName == tagToClose) {
+
+     }
+  }
+}
+
+let getName = () => {
+  name = `${tagName}_${randomId}`;
+}
+
 let createDOMElement = () => {
+  getName();
   console.log(`tagName = ${tagName}`);
-  outputJavaScript.value += `const name = document.createElement('${tagName}');\n`;
+  outputJavaScript.value += `const ${name} = document.createElement('${tagName}');\n`;
   trimmedString = trimmedString.replace(`${tagName}`, '');
 }
 
@@ -78,7 +109,8 @@ let checkClassesCount = () => {
 }
 
 let addChildToParent = () => {
- outputJavaScript.value += `parent.appendChild(name);\n`;
+ outputJavaScript.value += `${parent}.appendChild(${name});\n`;
+ getParent();
  removeFirstStringFromHtml();
  getLastCharOfString(inputHtml.value);
  getStringFromHtmlCode();
@@ -91,13 +123,12 @@ let checkClosingTag = () => {
     let startIndex = trimmedString.indexOf('</') + 2
     closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
     if (closingTagName === tagName) {
-      console.log('closingTagName === tagName');
     }
   }
 }
 
 let addTextContentToElement = () => {
-  outputJavaScript.value += `name.textContent = '${textContent}';\n`;
+  outputJavaScript.value += `${name}.textContent = '${textContent}';\n`;
   addChildToParent();
 }
 
@@ -107,7 +138,6 @@ let checkTextContent = () => {
  if (hasClosingTag) {
   textContent = trimmedString.slice(startIndex, trimmedString.indexOf('</', startIndex))
  } else {
-  console.log(trimmedString);
    textContent = trimmedString.slice(startIndex)
  }
  if (textContent === '' || textContent === ' ') {
@@ -128,7 +158,7 @@ let checkAttributes = () => {
 }
 
 let addClassToElement = () => {
-  outputJavaScript.value += `name.classList.add('${className}');\n`;
+  outputJavaScript.value += `${name}.classList.add('${className}');\n`;
   if (classesCount > 1) {
     trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
   } else {
@@ -137,6 +167,7 @@ let addClassToElement = () => {
   checkAttributes();
   // addChildToParent();
 }
+
 
 let getClassName = () => {
   className = classContent;
@@ -155,7 +186,7 @@ let getClassNames = () => {
 }
 
 let addIdToElement = () => {
-   outputJavaScript.value += `name.setAttribute('${attrName}', '${attrValue}');\n`;
+   outputJavaScript.value += `${name}.setAttribute('${attrName}', '${attrValue}');\n`;
 }
 
 let getAttrValue = () => {
@@ -196,8 +227,17 @@ let checkRightTagName = () => {
 };
 
 let getOpennigTag = () => {
-  getTrimmedString()
-  trimmedString = trimmedString.replace('>', ' >');
+  getTrimmedString();
+  createId(5);
+  if (trimmedString[1] === '/') {
+    getParent();
+    removeFirstStringFromHtml();
+    getLastCharOfString(inputHtml.value);
+    getStringFromHtmlCode();
+    getOpennigTag();
+    // getOpennigTag();
+  } else {
+    trimmedString = trimmedString.replace('>', ' >');
   if (trimmedString[0] !== signs[1]) {
     outputJavaScript.value +=  `Your code must start with the '<'\n`;
   } else if (trimmedString[1] == signs[2]) {
@@ -219,11 +259,15 @@ let getOpennigTag = () => {
         createDOMElement();
         getAttr();
        } else {
-          if (tagName[0] !== '/')
-          outputJavaScript.value += `Incorrect tag name\n`;
-       }
+          if (tagName[0] !== '/') {
+            outputJavaScript.value += `Incorrect tag name\n`;
+          } else {
+            getParent();
+          }
+        }
+      }
     }
-  }
+  } 
 }
 
 convertBtn.addEventListener('click', () => {
