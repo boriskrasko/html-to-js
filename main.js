@@ -19,19 +19,16 @@ let attrName;
 let hasClosingTag;
 let textContent;
 
-inputHtml.value = `<div visibled id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block">The Times      
- <h1 class="title"></h1>
+inputHtml.value = `<div visibled id="art" class="container flex-box greeting w-12" style="border: 1px solid gray" title="main block">The Times  
+ <p></p>    
+ <h1 class="title hello"></h1>
+ <h2 class="subtitle"></h2>
  <h2 class="subtitle hello"></h2>
- <ul class="list items">
-  <li> </li>
-  <li> </li>
+ <ul class="list items">ToDo  
+  <li class="item   "> Call mom</li>
+  <li> Buy laptop</li>
  </ul>
 </div>`;
- // <h2 class="subtitle"></h2>
- // <ul class="list items">
- //  <li></li>
- //  <li></li>
- // </ul>
 
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
@@ -55,6 +52,7 @@ let getIndexOfChar = (str, char) => {
 }
 
 let createDOMElement = () => {
+  console.log(`tagName = ${tagName}`);
   outputJavaScript.value += `const name = document.createElement('${tagName}');\n`;
   trimmedString = trimmedString.replace(`${tagName}`, '');
 }
@@ -66,7 +64,6 @@ let checkClass = () => {
 let getClassContent =  () => {
  let startIndex = trimmedString.indexOf('class="') + 7;
  trimmedString = trimmedString.replace(/ +"/g, '"').trim();
- console.log(classContent);
  classContent = trimmedString.slice(startIndex , trimmedString.indexOf('"', startIndex));
 }
 
@@ -91,12 +88,12 @@ let checkClassesCount = () => {
   }
 }
 
-let addChildToParrent = () => {
- outputJavaScript.value += `parrent.appendChild(name);\n`;
+let addChildToParent = () => {
+ outputJavaScript.value += `parent.appendChild(name);\n`;
  removeFirstStringFromHtml();
- // getLastCharOfString(inputHtml.value);
- // getStringFromHtmlCode();
- // getOpennigTag();
+ getLastCharOfString(inputHtml.value);
+ getStringFromHtmlCode();
+ getOpennigTag();
 }
 
 let checkClosingTag = () => {
@@ -104,7 +101,6 @@ let checkClosingTag = () => {
   if (hasClosingTag) {
     let startIndex = trimmedString.indexOf('</') + 2
     closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
-    console.log(closingTagName);
     if (closingTagName === tagName) {
       console.log('closingTagName === tagName');
     }
@@ -113,7 +109,7 @@ let checkClosingTag = () => {
 
 let addTextContentToElement = () => {
   outputJavaScript.value += `name.textContent = '${textContent}';\n`;
-  addChildToParrent();
+  addChildToParent();
 }
 
 let checkTextContent = () => {
@@ -122,32 +118,35 @@ let checkTextContent = () => {
  if (hasClosingTag) {
   textContent = trimmedString.slice(startIndex, trimmedString.indexOf('</', startIndex))
  } else {
-   textContent = trimmedString.slice(startIndex, trimmedString.indexOf('\n', startIndex))
+  console.log(trimmedString);
+   textContent = trimmedString.slice(startIndex)
  }
- console.log(textContent);
- addTextContentToElement();
  if (textContent === '' || textContent === ' ') {
-  console.log('no text content');
+  addChildToParent();
+ } else {
+  addTextContentToElement();
  }
 }
 
 let checkAttributes = () => {
  hasAttr = (trimmedString.indexOf(`"`) !== -1) ? true : false;
- console.log(hasAttr);
  if (hasAttr) {
   getAttr();
  } else {
   checkTextContent();
-  // addChildToParrent();
+  // addChildToParent();
  }
 }
 
 let addClassToElement = () => {
   outputJavaScript.value += `name.classList.add('${className}');\n`;
-  trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
-  console.log(trimmedString);
+  if (classesCount > 1) {
+    trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
+  } else {
+    trimmedString = trimmedString.replace(`class="${classContent}"`, '');
+  }
   checkAttributes();
-  // addChildToParrent();
+  // addChildToParent();
 }
 
 let getClassName = () => {
@@ -173,26 +172,25 @@ let addIdToElement = () => {
 let getAttrValue = () => {
   let startIndex = trimmedString.indexOf('="') + 2;
   attrValue = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
-  console.log(attrValue);
   trimmedString = trimmedString.replace(`${attrName}="${attrValue}"`, '');
-  console.log(trimmedString);
   addIdToElement();
   checkAttributes();
 }
 
 let getAttrName = () => {
-  console.log(trimmedString);
   let startIndex = trimmedString.indexOf('=');
-  attrName = trimmedString.slice(trimmedString.lastIndexOf(' ', startIndex - 2) + 1, startIndex);
-  attrName = attrName.trim();
-  console.log(attrName);
-  getAttrValue();
+  if (startIndex !== -1) {
+    attrName = trimmedString.slice(trimmedString.lastIndexOf(' ', startIndex - 2) + 1, startIndex);
+    attrName = attrName.trim();
+    getAttrValue();
+  } else {
+    checkTextContent();
+  }
 }
 
 let getAttr = () => {
   checkClass();
   if (hasClass) {
-    console.log(`yes`)
     checkClassesCount();
     if (classesCount === 1) {
       getClassName();
@@ -200,7 +198,6 @@ let getAttr = () => {
       getClassNames();
     }
   } else {
-    console.log('doesn`t class');
     getAttrName();
   }
 }
@@ -211,6 +208,7 @@ let checkRightTagName = () => {
 
 let getOpennigTag = () => {
   getTrimmedString()
+  trimmedString = trimmedString.replace('>', ' >');
   if (trimmedString[0] !== signs[1]) {
     outputJavaScript.value =  `Your code must start with the '<'\n`;
   } else if (trimmedString[1] == signs[2]) {
@@ -232,6 +230,7 @@ let getOpennigTag = () => {
         createDOMElement();
         getAttr();
        } else {
+          if (tagName[0] !== '/')
           outputJavaScript.value += `Incorrect tag name\n`;
        }
     }
