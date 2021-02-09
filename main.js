@@ -148,7 +148,7 @@ let checkTextContent = () => {
  checkClosingTag();
  let startIndex = trimmedString.indexOf('>') + 1;
  if (hasClosingTag) {
-  textContent = trimmedString.slice(startIndex, trimmedString.indexOf('</', startIndex))
+  textContent = trimmedString.slice(startIndex, trimmedString.lastIndexOf('</'))
  } else {
    textContent = trimmedString.slice(startIndex)
  }
