@@ -22,6 +22,7 @@ let name;
 let parent;
 let tagToClose;
 let randomId;
+let stackOfClosingTads = [];
 
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
@@ -57,12 +58,8 @@ let getParent = () => {
   checkClosingTag();
   if (!hasClosingTag) {
     tagToClose = tagName;
-    console.log('tagToClose = ' + tagToClose);
     parent = name;
-  } else {
-     if (closingTagName == tagToClose) {
-
-     }
+    stackOfClosingTads.push(name);
   }
 }
 
@@ -72,7 +69,6 @@ let getName = () => {
 
 let createDOMElement = () => {
   getName();
-  console.log(`tagName = ${tagName}`);
   outputJavaScript.value += `const ${name} = document.createElement('${tagName}');\n`;
   trimmedString = trimmedString.replace(`${tagName}`, '');
 }
@@ -114,7 +110,7 @@ let addChildToParent = () => {
  removeFirstStringFromHtml();
  getLastCharOfString(inputHtml.value);
  getStringFromHtmlCode();
- getOpennigTag();
+ getOpennigTag();   
 }
 
 let checkClosingTag = () => {
@@ -153,7 +149,6 @@ let checkAttributes = () => {
   getAttr();
  } else {
   checkTextContent();
-  // addChildToParent();
  }
 }
 
@@ -165,9 +160,7 @@ let addClassToElement = () => {
     trimmedString = trimmedString.replace(`class="${classContent}"`, '');
   }
   checkAttributes();
-  // addChildToParent();
 }
-
 
 let getClassName = () => {
   className = classContent;
@@ -231,11 +224,12 @@ let getOpennigTag = () => {
   createId(5);
   if (trimmedString[1] === '/') {
     getParent();
+    stackOfClosingTads.pop();
+    parent = stackOfClosingTads[stackOfClosingTads.length - 1];
     removeFirstStringFromHtml();
     getLastCharOfString(inputHtml.value);
     getStringFromHtmlCode();
     getOpennigTag();
-    // getOpennigTag();
   } else {
     trimmedString = trimmedString.replace('>', ' >');
   if (trimmedString[0] !== signs[1]) {
@@ -261,8 +255,6 @@ let getOpennigTag = () => {
        } else {
           if (tagName[0] !== '/') {
             outputJavaScript.value += `Incorrect tag name\n`;
-          } else {
-            getParent();
           }
         }
       }
@@ -270,7 +262,7 @@ let getOpennigTag = () => {
   } 
 }
 
-convertBtn.addEventListener('click', () => {
+  convertBtn.addEventListener('click', () => {
   inputHtml.value += '\n//';
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
