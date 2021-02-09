@@ -1,8 +1,9 @@
 const inputHtml = document.querySelector('.input');
 const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
+const copyBtn = document.querySelector('.copy-btn');
 const logs = document.querySelector('.logs');
-
+const tooltip = document.getElementById("myTooltip");
 
 const signs = ['\n', '<', ' ',];
 
@@ -266,7 +267,9 @@ let getOpennigTag = () => {
     getOpennigTag();
   } else {
     trimmedString = trimmedString.replace('>', ' >');
-  if (trimmedString[0] !== signs[1]) {
+    if (trimmedString[0] == 'D') {
+    outputJavaScript.value += ``;
+  } else if (trimmedString[0] !== signs[1]) {
     outputJavaScript.value +=  `Your code must start with the '<'\n`;
   } else if (trimmedString[1] == signs[2]) {
     outputJavaScript.value += `There can be no space after '<'\n`;
@@ -296,6 +299,21 @@ let getOpennigTag = () => {
   } 
 }
 
+let copyResult = () => {
+  outputJavaScript.select();
+  outputJavaScript.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  
+  tooltip.innerHTML = `Copied`;
+}
+
+let outFunc = () => {
+  tooltip.innerHTML = `Copy to clipboard`;
+}
+
+copyBtn.addEventListener('click', copyResult);
+copyBtn.addEventListener('mouseout', outFunc);
+
 convertBtn.addEventListener('click', () => {
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
   firstIndexOfComment = inputHtml.value.indexOf('<!--');
@@ -305,7 +323,7 @@ convertBtn.addEventListener('click', () => {
   inputHtml.value = inputHtml.value.replace(comment, ``);
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
   logs.value = inputHtml.value;
-  inputHtml.value += '\n//';
+  inputHtml.value += '\nDone!';
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
   getOpennigTag();
