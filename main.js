@@ -1,6 +1,8 @@
 const inputHtml = document.querySelector('.input');
 const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
+const logs = document.querySelector('.logs');
+
 
 const signs = ['\n', '<', ' ',];
 
@@ -154,9 +156,13 @@ let checkTextContent = () => {
  }
  if (textContent === '' || textContent === ' ') {
   addChildToParent();
- } else {
-  addTextContentToElement();
- }
+ } else  if (textContent.trim()[0] == '<') {
+  trimmedString = textContent;
+  console.log(trimmedString);
+  addChildToParent();
+  } else {
+    addTextContentToElement();
+  }
 }
 
 let checkAttributes = () => {
@@ -288,6 +294,9 @@ let getOpennigTag = () => {
 }
 
 convertBtn.addEventListener('click', () => {
+  inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
+  inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
+  logs.value = inputHtml.value;
   inputHtml.value += '\n//';
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
