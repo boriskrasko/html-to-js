@@ -4,6 +4,8 @@ const convertBtn = document.querySelector('.convert-btn');
 
 const signs = ['\n', '<', ' ',];
 
+const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'source', 'track', 'wbr'];
+
 let lastCharOfString;
 let stringFromHtmlCode;
 let trimmedString;
@@ -23,10 +25,22 @@ let parent;
 let tagToClose;
 let randomId;
 let stackOfClosingTads = [];
+let isSingletonTags;
 
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
 }
+
+ let checkSingletonTags = (tag) => {
+  let x = false;
+  for (let i = 0; i < singletonTags.length; i++) {
+    if (singletonTags[i] == tagName) {
+      x = true;
+    }
+  }
+  isSingletonTags = x;
+  console.log(isSingletonTags);
+ }
 
 let createId = (length) => {
   randomId = ``;
@@ -57,9 +71,12 @@ let getIndexOfChar = (str, char) => {
 let getParent = () => {
   checkClosingTag();
   if (!hasClosingTag) {
-    tagToClose = tagName;
-    parent = name;
-    stackOfClosingTads.push(name);
+    checkSingletonTags();
+    if (!isSingletonTags) {
+      tagToClose = tagName;
+      parent = name;
+      stackOfClosingTads.push(name);
+    }
   }
 }
 
