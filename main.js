@@ -28,6 +28,9 @@ let tagToClose;
 let randomId;
 let stackOfClosingTads = [];
 let isSingletonTags;
+let firstIndexOfComment;
+let lastIndexOfComment;
+let comment;
 
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
@@ -295,6 +298,11 @@ let getOpennigTag = () => {
 
 convertBtn.addEventListener('click', () => {
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
+  firstIndexOfComment = inputHtml.value.indexOf('<!--');
+  lastIndexOfComment = inputHtml.value.lastIndexOf('-->') + 4;
+  comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment)
+  console.log(comment);
+  inputHtml.value = inputHtml.value.replace(comment, ``);
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
   logs.value = inputHtml.value;
   inputHtml.value += '\n//';
