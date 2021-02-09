@@ -39,7 +39,6 @@ let getLastCharOfString = (x) => {
     }
   }
   isSingletonTags = x;
-  console.log(isSingletonTags);
  }
 
 let createId = (length) => {
@@ -199,12 +198,21 @@ let addIdToElement = () => {
    outputJavaScript.value += `${name}.setAttribute('${attrName}', '${attrValue}');\n`;
 }
 
+let addSrcToElement = () => {
+   outputJavaScript.value += `${name}.src = '${attrValue}';\n`;
+}
+
 let getAttrValue = () => {
   let startIndex = trimmedString.indexOf('="') + 2;
   attrValue = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
   trimmedString = trimmedString.replace(`${attrName}="${attrValue}"`, '');
-  addIdToElement();
-  checkAttributes();
+  if (attrName == 'src') {
+    addSrcToElement();
+    checkAttributes();
+  } else {
+    addIdToElement();
+    checkAttributes();
+  }
 }
 
 let getAttrName = () => {
@@ -279,7 +287,7 @@ let getOpennigTag = () => {
   } 
 }
 
-  convertBtn.addEventListener('click', () => {
+convertBtn.addEventListener('click', () => {
   inputHtml.value += '\n//';
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
