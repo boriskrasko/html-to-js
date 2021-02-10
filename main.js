@@ -27,7 +27,7 @@ let name;
 let parent;
 let tagToClose;
 let randomId;
-let stackOfClosingTads = [];
+let stackOfClosingTags = [];
 let isSingletonTags;
 let firstIndexOfComment;
 let lastIndexOfComment;
@@ -80,7 +80,7 @@ let getParent = () => {
     if (!isSingletonTags) {
       tagToClose = tagName;
       parent = name;
-      stackOfClosingTads.push(name);
+      stackOfClosingTags.push(name);
     }
   }
 }
@@ -266,8 +266,8 @@ let getOpennigTag = () => {
   createId(5);
   if (trimmedString[1] === '/') {
     getParent();
-    stackOfClosingTads.pop();
-    parent = stackOfClosingTads[stackOfClosingTads.length - 1];
+    stackOfClosingTags.pop();
+    parent = stackOfClosingTags[stackOfClosingTags.length - 1];
     removeFirstStringFromHtml();
     getLastCharOfString(inputHtml.value);
     getStringFromHtmlCode();
