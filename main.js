@@ -1,6 +1,9 @@
 const inputHtml = document.querySelector('.input');
 const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
+const copyBtn = document.querySelector('.copy-btn');
+const logs = document.querySelector('.logs');
+const tooltip = document.getElementById("myTooltip");
 
 const signs = ['\n', '<', ' ',];
 
@@ -26,6 +29,9 @@ let tagToClose;
 let randomId;
 let stackOfClosingTads = [];
 let isSingletonTags;
+let firstIndexOfComment;
+let lastIndexOfComment;
+let comment;
 
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
@@ -148,15 +154,19 @@ let checkTextContent = () => {
  checkClosingTag();
  let startIndex = trimmedString.indexOf('>') + 1;
  if (hasClosingTag) {
-  textContent = trimmedString.slice(startIndex, trimmedString.indexOf('</', startIndex))
+  textContent = trimmedString.slice(startIndex, trimmedString.lastIndexOf('</'))
  } else {
    textContent = trimmedString.slice(startIndex)
  }
  if (textContent === '' || textContent === ' ') {
   addChildToParent();
- } else {
-  addTextContentToElement();
- }
+ } else  if (textContent.trim()[0] == '<') {
+  trimmedString = textContent;
+  console.log(trimmedString);
+  addChildToParent();
+  } else {
+    addTextContentToElement();
+  }
 }
 
 let checkAttributes = () => {
@@ -257,7 +267,9 @@ let getOpennigTag = () => {
     getOpennigTag();
   } else {
     trimmedString = trimmedString.replace('>', ' >');
-  if (trimmedString[0] !== signs[1]) {
+    if (trimmedString[0] == 'D') {
+    outputJavaScript.value += ``;
+  } else if (trimmedString[0] !== signs[1]) {
     outputJavaScript.value +=  `Your code must start with the '<'\n`;
   } else if (trimmedString[1] == signs[2]) {
     outputJavaScript.value += `There can be no space after '<'\n`;
@@ -287,8 +299,31 @@ let getOpennigTag = () => {
   } 
 }
 
+let copyResult = () => {
+  outputJavaScript.select();
+  outputJavaScript.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  
+  tooltip.innerHTML = `Copied`;
+}
+
+let outFunc = () => {
+  tooltip.innerHTML = `Copy to clipboard`;
+}
+
+copyBtn.addEventListener('click', copyResult);
+copyBtn.addEventListener('mouseout', outFunc);
+
 convertBtn.addEventListener('click', () => {
-  inputHtml.value += '\n//';
+  inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
+  firstIndexOfComment = inputHtml.value.indexOf('<!--');
+  lastIndexOfComment = inputHtml.value.lastIndexOf('-->') + 4;
+  comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment)
+  console.log(comment);
+  inputHtml.value = inputHtml.value.replace(comment, ``);
+  inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
+  logs.value = inputHtml.value;
+  inputHtml.value += '\nDone!';
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
   getOpennigTag();
