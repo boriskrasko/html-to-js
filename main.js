@@ -1,8 +1,13 @@
 const inputHtml = document.querySelector('.input');
 const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
+const copyBtn = document.querySelector('.copy-btn');
+const logs = document.querySelector('.logs');
+const tooltip = document.getElementById("myTooltip");
 
 const signs = ['\n', '<', ' ',];
+
+const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'source', 'track', 'wbr'];
 
 let lastCharOfString;
 let stringFromHtmlCode;
@@ -15,18 +20,40 @@ let classContent;
 let classesCount = 0;
 let className;
 let classContentBeforeTrimming;
-
-inputHtml.value = `<div class="container flex-box greeting">          
- <h1 class="title"></h1>
- <h2 class="subtitle"></h2>
- <ul class="list items">
-  <li></li>
-  <li></li>
- </ul>
-</div>`;
+let attrName;
+let hasClosingTag;
+let textContent;
+let name;
+let parent;
+let tagToClose;
+let randomId;
+let stackOfClosingTads = [];
+let isSingletonTags;
+let firstIndexOfComment;
+let lastIndexOfComment;
+let comment;
 
 let getLastCharOfString = (x) => {
  lastCharOfString = x.indexOf(`\n`);
+}
+
+ let checkSingletonTags = (tag) => {
+  let x = false;
+  for (let i = 0; i < singletonTags.length; i++) {
+    if (singletonTags[i] == tagName) {
+      x = true;
+    }
+  }
+  isSingletonTags = x;
+ }
+
+let createId = (length) => {
+  randomId = ``;
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  for (let i = 0; i < length; i++) {
+    randomId += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return randomId;
 }
 
 let getStringFromHtmlCode = () => {
@@ -35,6 +62,7 @@ let getStringFromHtmlCode = () => {
 
 let removeFirstStringFromHtml = () => {
   inputHtml.value = inputHtml.value.replace(stringFromHtmlCode + signs[0], '');
+  getStringFromHtmlCode();
 }
 
 let getTrimmedString = () => {
@@ -45,8 +73,25 @@ let getIndexOfChar = (str, char) => {
   indexOfChar = str.indexOf(char);
 }
 
+let getParent = () => {
+  checkClosingTag();
+  if (!hasClosingTag) {
+    checkSingletonTags();
+    if (!isSingletonTags) {
+      tagToClose = tagName;
+      parent = name;
+      stackOfClosingTads.push(name);
+    }
+  }
+}
+
+let getName = () => {
+  name = `${tagName}_${randomId}`;
+}
+
 let createDOMElement = () => {
-  outputJavaScript.value += `const name = document.createElement('${tagName}');\n`;
+  getName();
+  outputJavaScript.value += `const ${name} = document.createElement('${tagName}');\n`;
   trimmedString = trimmedString.replace(`${tagName}`, '');
 }
 
@@ -55,7 +100,9 @@ let checkClass = () => {
 }
 
 let getClassContent =  () => {
- classContent = trimmedString.slice(trimmedString.indexOf('="') + 2, trimmedString.lastIndexOf('"'));
+ let startIndex = trimmedString.indexOf('class="') + 7;
+ trimmedString = trimmedString.replace(/ +"/g, '"').trim();
+ classContent = trimmedString.slice(startIndex , trimmedString.indexOf('"', startIndex));
 }
 
 let removeExtraSpacesFromClassContent = () => {
@@ -79,15 +126,65 @@ let checkClassesCount = () => {
   }
 }
 
+let addChildToParent = () => {
+ outputJavaScript.value += `${parent}.appendChild(${name});\n`;
+ getParent();
+ removeFirstStringFromHtml();
+ getLastCharOfString(inputHtml.value);
+ getStringFromHtmlCode();
+ getOpennigTag();   
+}
+
+let checkClosingTag = () => {
+  hasClosingTag = (trimmedString.indexOf('</') !== -1) ? true : false;
+  if (hasClosingTag) {
+    let startIndex = trimmedString.indexOf('</') + 2
+    closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
+    if (closingTagName === tagName) {
+    }
+  }
+}
+
+let addTextContentToElement = () => {
+  outputJavaScript.value += `${name}.textContent = '${textContent}';\n`;
+  addChildToParent();
+}
+
+let checkTextContent = () => {
+ checkClosingTag();
+ let startIndex = trimmedString.indexOf('>') + 1;
+ if (hasClosingTag) {
+  textContent = trimmedString.slice(startIndex, trimmedString.lastIndexOf('</'))
+ } else {
+   textContent = trimmedString.slice(startIndex)
+ }
+ if (textContent === '' || textContent === ' ') {
+  addChildToParent();
+ } else  if (textContent.trim()[0] == '<') {
+  trimmedString = textContent;
+  console.log(trimmedString);
+  addChildToParent();
+  } else {
+    addTextContentToElement();
+  }
+}
+
 let checkAttributes = () => {
  hasAttr = (trimmedString.indexOf(`"`) !== -1) ? true : false;
- console.log(hasAttr);
+ if (hasAttr) {
+  getAttr();
+ } else {
+  checkTextContent();
+ }
 }
 
 let addClassToElement = () => {
-  outputJavaScript.value += `name.classList.add('${className}');\n`;
-  trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
-  console.log(trimmedString);
+  outputJavaScript.value += `${name}.classList.add('${className}');\n`;
+  if (classesCount > 1) {
+    trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
+  } else {
+    trimmedString = trimmedString.replace(`class="${classContent}"`, '');
+  }
   checkAttributes();
 }
 
@@ -107,10 +204,41 @@ let getClassNames = () => {
   addClassesToElement();
 }
 
+let addIdToElement = () => {
+   outputJavaScript.value += `${name}.setAttribute('${attrName}', '${attrValue}');\n`;
+}
+
+let addSrcToElement = () => {
+   outputJavaScript.value += `${name}.src = '${attrValue}';\n`;
+}
+
+let getAttrValue = () => {
+  let startIndex = trimmedString.indexOf('="') + 2;
+  attrValue = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
+  trimmedString = trimmedString.replace(`${attrName}="${attrValue}"`, '');
+  if (attrName == 'src') {
+    addSrcToElement();
+    checkAttributes();
+  } else {
+    addIdToElement();
+    checkAttributes();
+  }
+}
+
+let getAttrName = () => {
+  let startIndex = trimmedString.indexOf('=');
+  if (startIndex !== -1) {
+    attrName = trimmedString.slice(trimmedString.lastIndexOf(' ', startIndex - 2) + 1, startIndex);
+    attrName = attrName.trim();
+    getAttrValue();
+  } else {
+    checkTextContent();
+  }
+}
+
 let getAttr = () => {
   checkClass();
   if (hasClass) {
-    console.log('has class');
     checkClassesCount();
     if (classesCount === 1) {
       getClassName();
@@ -118,41 +246,85 @@ let getAttr = () => {
       getClassNames();
     }
   } else {
-    console.log('doesn`t class');
-    //
+    getAttrName();
   }
 }
 
+let checkRightTagName = () => {
+  isTagNameRight = /\W/.test(tagName) + /-/.test(tagName);
+};
+
 let getOpennigTag = () => {
-  getTrimmedString()
-  if (trimmedString[0] !== signs[1]) {
-    outputJavaScript.value =  `Your code must start with the '<'`;
+  getTrimmedString();
+  createId(5);
+  if (trimmedString[1] === '/') {
+    getParent();
+    stackOfClosingTads.pop();
+    parent = stackOfClosingTads[stackOfClosingTads.length - 1];
+    removeFirstStringFromHtml();
+    getLastCharOfString(inputHtml.value);
+    getStringFromHtmlCode();
+    getOpennigTag();
+  } else {
+    trimmedString = trimmedString.replace('>', ' >');
+    if (trimmedString[0] == 'D') {
+    outputJavaScript.value += ``;
+  } else if (trimmedString[0] !== signs[1]) {
+    outputJavaScript.value +=  `Your code must start with the '<'\n`;
   } else if (trimmedString[1] == signs[2]) {
-    outputJavaScript.value = `There can be no space after '<'`;
+    outputJavaScript.value += `There can be no space after '<'\n`;
   } else {
     getIndexOfChar(trimmedString, ' ');
     indexOfSpace = indexOfChar;
     if (indexOfSpace === -1) {
-      outputJavaScript.value += ` tag without attributes `;
       if (trimmedString[trimmedString.length - 1] == '>') {
         opennigTag = trimmedString.slice(1, trimmedString.length - 1);
         tagName = opennigTag;
         createDOMElement();
       }
     } else {
-       console.log(indexOfSpace);
        opennigTag = trimmedString.slice(1, indexOfSpace);
        tagName = opennigTag;
-       createDOMElement();
-       getAttr();
+       checkRightTagName();
+       if (!isTagNameRight) {
+        createDOMElement();
+        getAttr();
+       } else {
+          if (tagName[0] !== '/') {
+            outputJavaScript.value += `Incorrect tag name\n`;
+          }
+        }
+      }
     }
-  }
+  } 
 }
 
-getLastCharOfString(inputHtml.value);
-getStringFromHtmlCode();
-getOpennigTag();
-// removeFirstStringFromHtml();
+let copyResult = () => {
+  outputJavaScript.select();
+  outputJavaScript.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  
+  tooltip.innerHTML = `Copied`;
+}
 
-// console.log(stringFromHtmlCode);
-// console.log(inputHtml.value);
+let outFunc = () => {
+  tooltip.innerHTML = `Copy to clipboard`;
+}
+
+copyBtn.addEventListener('click', copyResult);
+copyBtn.addEventListener('mouseout', outFunc);
+
+convertBtn.addEventListener('click', () => {
+  inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
+  firstIndexOfComment = inputHtml.value.indexOf('<!--');
+  lastIndexOfComment = inputHtml.value.lastIndexOf('-->') + 4;
+  comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment)
+  console.log(comment);
+  inputHtml.value = inputHtml.value.replace(comment, ``);
+  inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
+  logs.value = inputHtml.value;
+  inputHtml.value += '\nDone!';
+  getLastCharOfString(inputHtml.value);
+  getStringFromHtmlCode();
+  getOpennigTag();
+})
