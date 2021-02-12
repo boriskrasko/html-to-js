@@ -27,7 +27,7 @@ let name;
 let parent;
 let tagToClose;
 let randomId;
-let stackOfClosingTads = [];
+let stackOfClosingTags = [];
 let isSingletonTags;
 let firstIndexOfComment;
 let lastIndexOfComment;
@@ -80,7 +80,7 @@ let getParent = () => {
     if (!isSingletonTags) {
       tagToClose = tagName;
       parent = name;
-      stackOfClosingTads.push(name);
+      stackOfClosingTags.push(name);
     }
   }
 }
@@ -146,8 +146,19 @@ let checkClosingTag = () => {
 }
 
 let addTextContentToElement = () => {
-  outputJavaScript.value += `${name}.textContent = '${textContent}';\n`;
-  addChildToParent();
+  if (textContent.indexOf('&#') == -1) {
+    outputJavaScript.value += `${parent}.textContent = '${textContent}';\n`;
+  } else {
+    outputJavaScript.value += `${parent}.innerHTML = '${textContent}';\n`;
+  }
+  if (trimmedString[0] !== signs[1]) {
+    removeFirstStringFromHtml();
+    getLastCharOfString(inputHtml.value);
+    getStringFromHtmlCode();
+    getOpennigTag();
+  } else {
+    addChildToParent();
+  }
 }
 
 let checkTextContent = () => {
@@ -259,20 +270,19 @@ let getOpennigTag = () => {
   createId(5);
   if (trimmedString[1] === '/') {
     getParent();
-    stackOfClosingTads.pop();
-    parent = stackOfClosingTads[stackOfClosingTads.length - 1];
+    stackOfClosingTags.pop();
+    parent = stackOfClosingTags[stackOfClosingTags.length - 1];
     removeFirstStringFromHtml();
     getLastCharOfString(inputHtml.value);
     getStringFromHtmlCode();
     getOpennigTag();
   } else {
     trimmedString = trimmedString.replace('>', ' >');
-    if (trimmedString[0] == 'D') {
+    if (trimmedString.indexOf('Done') !== -1) {
     outputJavaScript.value += ``;
   } else if (trimmedString[0] !== signs[1]) {
-    outputJavaScript.value +=  `Your code must start with the '<'\n`;
-  } else if (trimmedString[1] == signs[2]) {
-    outputJavaScript.value += `There can be no space after '<'\n`;
+    textContent = trimmedString;
+    addTextContentToElement();
   } else {
     getIndexOfChar(trimmedString, ' ');
     indexOfSpace = indexOfChar;
@@ -316,11 +326,14 @@ copyBtn.addEventListener('mouseout', outFunc);
 
 convertBtn.addEventListener('click', () => {
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
+  inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
+  while (firstIndexOfComment !== -1) {
   firstIndexOfComment = inputHtml.value.indexOf('<!--');
-  lastIndexOfComment = inputHtml.value.lastIndexOf('-->') + 4;
-  comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment)
+  lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
+  comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
   console.log(comment);
   inputHtml.value = inputHtml.value.replace(comment, ``);
+  }
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
   logs.value = inputHtml.value;
   inputHtml.value += '\nDone!';
@@ -328,3 +341,11 @@ convertBtn.addEventListener('click', () => {
   getStringFromHtmlCode();
   getOpennigTag();
 })
+
+// if (trimmedString[0] !== signs[1]) {
+//   outputJavaScript.value +=  `Your code must start with the '<'\n`;
+// } else if (trimmedString[1] == signs[2]) {
+//   outputJavaScript.value += `There can be no space after '<'\n`;
+// }
+
+// inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
