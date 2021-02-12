@@ -127,6 +127,7 @@ let checkClassesCount = () => {
 }
 
 let addChildToParent = () => {
+ if (parent === undefined) parent = `document.body`;
  outputJavaScript.value += `${parent}.appendChild(${name});\n`;
  getParent();
  removeFirstStringFromHtml();
