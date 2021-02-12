@@ -146,7 +146,11 @@ let checkClosingTag = () => {
 }
 
 let addTextContentToElement = () => {
-  outputJavaScript.value += `${parent}.textContent = '${textContent}';\n`;
+  if (textContent.indexOf('&#') == -1) {
+    outputJavaScript.value += `${parent}.textContent = '${textContent}';\n`;
+  } else {
+    outputJavaScript.value += `${parent}.innerHTML = '${textContent}';\n`;
+  }
   if (trimmedString[0] !== signs[1]) {
     removeFirstStringFromHtml();
     getLastCharOfString(inputHtml.value);
