@@ -146,7 +146,11 @@ let checkClosingTag = () => {
 }
 
 let addTextContentToElement = () => {
-  outputJavaScript.value += `${name}.textContent = '${textContent}';\n`;
+  if (textContent.indexOf('&#') == -1) {
+    outputJavaScript.value += `${parent}.textContent = '${textContent}';\n`;
+  } else {
+    outputJavaScript.value += `${parent}.innerHTML = '${textContent}';\n`;
+  }
   if (trimmedString[0] !== signs[1]) {
     removeFirstStringFromHtml();
     getLastCharOfString(inputHtml.value);
@@ -322,6 +326,7 @@ copyBtn.addEventListener('mouseout', outFunc);
 
 convertBtn.addEventListener('click', () => {
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
+  inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
   while (firstIndexOfComment !== -1) {
   firstIndexOfComment = inputHtml.value.indexOf('<!--');
   lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
@@ -342,3 +347,5 @@ convertBtn.addEventListener('click', () => {
 // } else if (trimmedString[1] == signs[2]) {
 //   outputJavaScript.value += `There can be no space after '<'\n`;
 // }
+
+// inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
