@@ -336,7 +336,7 @@ convertBtn.addEventListener('click', () => {
   }
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
   logs.value = inputHtml.value;
-  inputHtml.value += '\nDone!';
+  inputHtml.value += 'Done!\n';
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
   getOpennigTag();
