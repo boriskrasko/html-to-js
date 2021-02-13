@@ -2,10 +2,9 @@ const inputHtml = document.querySelector('.input');
 const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
-const logs = document.querySelector('.logs');
 const tooltip = document.getElementById("myTooltip");
 
-const signs = ['\n', '<', ' ',];
+const signs = ['\n', '<', ' ', ];
 
 const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'source', 'track', 'wbr'];
 
@@ -32,12 +31,13 @@ let isSingletonTags;
 let firstIndexOfComment;
 let lastIndexOfComment;
 let comment;
+let attr;
 
 let getLastCharOfString = (x) => {
- lastCharOfString = x.indexOf(`\n`);
+  lastCharOfString = x.indexOf(`\n`);
 }
 
- let checkSingletonTags = (tag) => {
+let checkSingletonTags = (tag) => {
   let x = false;
   for (let i = 0; i < singletonTags.length; i++) {
     if (singletonTags[i] == tagName) {
@@ -45,7 +45,7 @@ let getLastCharOfString = (x) => {
     }
   }
   isSingletonTags = x;
- }
+}
 
 let createId = (length) => {
   randomId = ``;
@@ -99,10 +99,10 @@ let checkClass = () => {
   hasClass = (trimmedString.indexOf('class') !== -1) ? true : false;
 }
 
-let getClassContent =  () => {
- let startIndex = trimmedString.indexOf('class="') + 7;
- trimmedString = trimmedString.replace(/ +"/g, '"').trim();
- classContent = trimmedString.slice(startIndex , trimmedString.indexOf('"', startIndex));
+let getClassContent = () => {
+  let startIndex = trimmedString.indexOf('class="') + 7;
+  trimmedString = trimmedString.replace(/ +"/g, '"').trim();
+  classContent = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
 }
 
 let removeExtraSpacesFromClassContent = () => {
@@ -127,12 +127,13 @@ let checkClassesCount = () => {
 }
 
 let addChildToParent = () => {
- outputJavaScript.value += `${parent}.appendChild(${name});\n`;
- getParent();
- removeFirstStringFromHtml();
- getLastCharOfString(inputHtml.value);
- getStringFromHtmlCode();
- getOpennigTag();   
+  if (parent === undefined) parent = `document.body`;
+  outputJavaScript.value += `${parent}.appendChild(${name});\n`;
+  getParent();
+  removeFirstStringFromHtml();
+  getLastCharOfString(inputHtml.value);
+  getStringFromHtmlCode();
+  getOpennigTag();
 }
 
 let checkClosingTag = () => {
@@ -140,8 +141,7 @@ let checkClosingTag = () => {
   if (hasClosingTag) {
     let startIndex = trimmedString.indexOf('</') + 2
     closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
-    if (closingTagName === tagName) {
-    }
+    if (closingTagName === tagName) {}
   }
 }
 
@@ -162,31 +162,54 @@ let addTextContentToElement = () => {
 }
 
 let checkTextContent = () => {
- checkClosingTag();
- let startIndex = trimmedString.indexOf('>') + 1;
- if (hasClosingTag) {
-  textContent = trimmedString.slice(startIndex, trimmedString.lastIndexOf('</'))
- } else {
-   textContent = trimmedString.slice(startIndex)
- }
- if (textContent === '' || textContent === ' ') {
-  addChildToParent();
- } else  if (textContent.trim()[0] == '<') {
-  trimmedString = textContent;
-  console.log(trimmedString);
-  addChildToParent();
+  checkClosingTag();
+  let startIndex = trimmedString.indexOf('>') + 1;
+  if (hasClosingTag) {
+    textContent = trimmedString.slice(startIndex, trimmedString.lastIndexOf('</'))
+  } else {
+    textContent = trimmedString.slice(startIndex)
+  }
+  if (textContent === '' || textContent === ' ') {
+    addChildToParent();
+  } else if (textContent.trim()[0] == '<') {
+    trimmedString = textContent;
+    addChildToParent();
   } else {
     addTextContentToElement();
   }
 }
 
+let checkAttributesWithoutValue = () => {
+  if (trimmedString.indexOf('<') !== -1) {
+    trimmedString = trimmedString.replace('<', ``);
+    trimmedString = trimmedString.replace('>', ``);
+    trimmedString = trimmedString.trim();
+  }
+  if (trimmedString.length === 0) {
+    checkTextContent();
+  } else if (trimmedString.indexOf(' ') !== -1) {
+    attr = trimmedString.slice(0, trimmedString.indexOf(' '))
+    trimmedString = trimmedString.replace(attr, ``);
+    trimmedString = trimmedString.trim();
+    outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`;
+    checkAttributesWithoutValue();
+  }
+  else {
+    attr = trimmedString;
+    outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`
+    trimmedString = trimmedString.replace(attr, ``);
+    trimmedString = trimmedString.trim();
+    checkTextContent();
+  }
+}
+
 let checkAttributes = () => {
- hasAttr = (trimmedString.indexOf(`"`) !== -1) ? true : false;
- if (hasAttr) {
-  getAttr();
- } else {
-  checkTextContent();
- }
+  hasAttr = (trimmedString.indexOf(`"`) !== -1) ? true : false;
+  if (hasAttr) {
+    getAttrName();
+  } else {
+    checkAttributesWithoutValue();
+  }
 }
 
 let addClassToElement = () => {
@@ -216,11 +239,11 @@ let getClassNames = () => {
 }
 
 let addIdToElement = () => {
-   outputJavaScript.value += `${name}.setAttribute('${attrName}', '${attrValue}');\n`;
+  outputJavaScript.value += `${name}.setAttribute('${attrName}', '${attrValue}');\n`;
 }
 
 let addSrcToElement = () => {
-   outputJavaScript.value += `${name}.src = '${attrValue}';\n`;
+  outputJavaScript.value += `${name}.src = '${attrValue}';\n`;
 }
 
 let getAttrValue = () => {
@@ -257,7 +280,7 @@ let getAttr = () => {
       getClassNames();
     }
   } else {
-    getAttrName();
+    checkAttributes();
   }
 }
 
@@ -279,41 +302,41 @@ let getOpennigTag = () => {
   } else {
     trimmedString = trimmedString.replace('>', ' >');
     if (trimmedString.indexOf('Done') !== -1) {
-    outputJavaScript.value += ``;
-  } else if (trimmedString[0] !== signs[1]) {
-    textContent = trimmedString;
-    addTextContentToElement();
-  } else {
-    getIndexOfChar(trimmedString, ' ');
-    indexOfSpace = indexOfChar;
-    if (indexOfSpace === -1) {
-      if (trimmedString[trimmedString.length - 1] == '>') {
-        opennigTag = trimmedString.slice(1, trimmedString.length - 1);
-        tagName = opennigTag;
-        createDOMElement();
-      }
+      outputJavaScript.value += ``;
+    } else if (trimmedString[0] !== signs[1]) {
+      textContent = trimmedString;
+      addTextContentToElement();
     } else {
-       opennigTag = trimmedString.slice(1, indexOfSpace);
-       tagName = opennigTag;
-       checkRightTagName();
-       if (!isTagNameRight) {
-        createDOMElement();
-        getAttr();
-       } else {
+      getIndexOfChar(trimmedString, ' ');
+      indexOfSpace = indexOfChar;
+      if (indexOfSpace === -1) {
+        if (trimmedString[trimmedString.length - 1] == '>') {
+          opennigTag = trimmedString.slice(1, trimmedString.length - 1);
+          tagName = opennigTag;
+          createDOMElement();
+        }
+      } else {
+        opennigTag = trimmedString.slice(1, indexOfSpace);
+        tagName = opennigTag;
+        checkRightTagName();
+        if (!isTagNameRight) {
+          createDOMElement();
+          getAttr();
+        } else {
           if (tagName[0] !== '/') {
             outputJavaScript.value += `Incorrect tag name\n`;
           }
         }
       }
     }
-  } 
+  }
 }
 
 let copyResult = () => {
   outputJavaScript.select();
   outputJavaScript.setSelectionRange(0, 99999);
   document.execCommand('copy');
-  
+
   tooltip.innerHTML = `Copied`;
 }
 
@@ -328,24 +351,14 @@ convertBtn.addEventListener('click', () => {
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
   inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
   while (firstIndexOfComment !== -1) {
-  firstIndexOfComment = inputHtml.value.indexOf('<!--');
-  lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
-  comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
-  console.log(comment);
-  inputHtml.value = inputHtml.value.replace(comment, ``);
+    firstIndexOfComment = inputHtml.value.indexOf('<!--');
+    lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
+    comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
+    inputHtml.value = inputHtml.value.replace(comment, ``);
   }
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
-  logs.value = inputHtml.value;
   inputHtml.value += 'Done!\n';
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
   getOpennigTag();
 })
-
-// if (trimmedString[0] !== signs[1]) {
-//   outputJavaScript.value +=  `Your code must start with the '<'\n`;
-// } else if (trimmedString[1] == signs[2]) {
-//   outputJavaScript.value += `There can be no space after '<'\n`;
-// }
-
-// inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
