@@ -7,21 +7,31 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <h1>HTML to JS</h1>
-  <textarea placeholder="HTML" class="input"></textarea>
-  <div class="tooltip">
-    <button class="convert-btn">
-    <span class="tooltiptext">Convert to JavaScript</span>
-    Convert
-    </button>
-  </div>
-  <textarea spellcheck="false" placeholder="JS" class="output"></textarea>
-  <div class="tooltip">
-    <button class="copy-btn">
-    <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-    Copy
-    </button>
-  </div>
+  <main>
+    <div class="flex-container">
+      <div>
+        <h1>HTML to JS</h1>
+        <textarea cols="55" rows="25" spellcheck="false" placeholder="HTML" class="input"></textarea>
+      </div>
+      <div class="tooltip">
+        <button class="convert-btn">
+          <span class="tooltiptext">Convert to JavaScript</span>
+        Convert
+        </button>
+      </div>
+    </div>
+    <div class="flex-container">
+      <div>
+        <textarea cols="55" rows="25" spellcheck="false" placeholder="JS" class="output"></textarea>
+      </div>
+      <div class="tooltip">
+        <button class="copy-btn">
+        <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+        Copy
+        </button>
+      </div>
+    </div>
+  </main>
   <script src="main.js"></script>
 </body>
 </html>
