@@ -116,6 +116,7 @@ let checkClassesCount = () => {
   classContent = classContent.trim()
   if (classContent.indexOf(' ') === -1) {
     classesCount = 1;
+    removeExtraSpacesFromClassContent();
   } else {
     removeExtraSpacesFromClassContent();
     for (let i = 0; i < classContent.length; i++) {
@@ -213,13 +214,15 @@ let checkAttributes = () => {
 }
 
 let addClassToElement = () => {
-  outputJavaScript.value += `${name}.classList.add('${className}');\n`;
-  if (classesCount > 1) {
+  className.trim();
+  if (className.length !== 0) {
+    outputJavaScript.value += `${name}.classList.add('${className}');\n`;
     trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
+    checkAttributes();
   } else {
     trimmedString = trimmedString.replace(`class="${classContent}"`, '');
+    checkAttributes();
   }
-  checkAttributes();
 }
 
 let getClassName = () => {
@@ -344,10 +347,17 @@ let outFunc = () => {
   tooltip.innerHTML = `Copy to clipboard`;
 }
 
+let clearInputHtmlValue = () => {
+  if (inputHtml.value.indexOf('Done!') !== -1)
+  inputHtml.value = '';
+}
+
 copyBtn.addEventListener('click', copyResult);
 copyBtn.addEventListener('mouseout', outFunc);
+inputHtml.addEventListener('click', clearInputHtmlValue);
 
 convertBtn.addEventListener('click', () => {
+  outputJavaScript.value = '';
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
   inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
   while (firstIndexOfComment !== -1) {
@@ -357,8 +367,15 @@ convertBtn.addEventListener('click', () => {
     inputHtml.value = inputHtml.value.replace(comment, ``);
   }
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
-  inputHtml.value += 'Done!\n';
-  getLastCharOfString(inputHtml.value);
-  getStringFromHtmlCode();
-  getOpennigTag();
+  if (inputHtml.value[0] !== signs[1]) {
+    outputJavaScript.value +=  `Your code must start with the '<'\n`;
+  } else if (inputHtml.value[1] == signs[2]) {
+    outputJavaScript.value += `There can be no space after '<'\n`;
+  } else {
+    inputHtml.value += 'Done!\n';
+    getLastCharOfString(inputHtml.value);
+    getStringFromHtmlCode();
+    getOpennigTag();
+    inputHtml.value = 'Done!';
+  }
 })

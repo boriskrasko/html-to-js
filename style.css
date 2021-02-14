@@ -5,25 +5,51 @@
 }
 
 body {
- font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;
 }
 
 h1, h2 {
- margin-left: 10px;
+  margin: 0 10px;
+  color: #134;
 }
 
 textarea {
-width: 480px;
-height: 360px;
-font-size: 16px;
-margin: 10px 10px;
-padding: 5px;
+  margin: 10px 10px;
+  padding: 5px 10px;
+  color: #134;
+  border: 1px solid #efefef;
+  background: rgb(250, 250, 250);
+}
+
+textarea:focus {
+  outline: none;
+  border: 1px solid #888;
+  border-radius: 4px;
+}
+
+textarea:hover {
+  background: rgb(248, 248, 248);
+  border-radius: 4px;
 }
 
 button {
- cursor: pointer;
- margin: 10px 10px;
- padding: 6px 8px;
+  cursor: pointer;
+  margin: 10px 10px;
+  padding: 6px 8px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+main {
+  margin-top: 4%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .tooltip {
