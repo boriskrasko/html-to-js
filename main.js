@@ -116,6 +116,7 @@ let checkClassesCount = () => {
   classContent = classContent.trim()
   if (classContent.indexOf(' ') === -1) {
     classesCount = 1;
+    removeExtraSpacesFromClassContent();
   } else {
     removeExtraSpacesFromClassContent();
     for (let i = 0; i < classContent.length; i++) {
@@ -213,13 +214,20 @@ let checkAttributes = () => {
 }
 
 let addClassToElement = () => {
-  outputJavaScript.value += `${name}.classList.add('${className}');\n`;
-  if (classesCount > 1) {
-    trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
+  className.trim();
+  if (className.length !== 0) {
+    outputJavaScript.value += `${name}.classList.add('${className}');\n`;
+    // if (classesCount > 1) {
+      trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
+      console.log(classContentBeforeTrimming);
+    // } else {
+    //   trimmedString = trimmedString.replace(`class="${classContent}"`, '');
+    // }
+    checkAttributes();
   } else {
     trimmedString = trimmedString.replace(`class="${classContent}"`, '');
+    checkAttributes();
   }
-  checkAttributes();
 }
 
 let getClassName = () => {
@@ -358,7 +366,13 @@ convertBtn.addEventListener('click', () => {
   }
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
   inputHtml.value += 'Done!\n';
-  getLastCharOfString(inputHtml.value);
-  getStringFromHtmlCode();
-  getOpennigTag();
+  if (inputHtml.value[0] !== signs[1]) {
+    outputJavaScript.value +=  `Your code must start with the '<'\n`;
+  } else if (inputHtml.value[1] == signs[2]) {
+    outputJavaScript.value += `There can be no space after '<'\n`;
+  } else {
+    getLastCharOfString(inputHtml.value);
+    getStringFromHtmlCode();
+    getOpennigTag();
+  }
 })
