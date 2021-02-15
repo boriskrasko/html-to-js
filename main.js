@@ -32,6 +32,11 @@ let firstIndexOfComment;
 let lastIndexOfComment;
 let comment;
 let attr;
+let styles = [];
+let property;
+let propertyValue;
+let declarations = [];
+let propertyLego = [];
 
 let getLastCharOfString = (x) => {
   lastCharOfString = x.indexOf(`\n`);
@@ -148,9 +153,9 @@ let checkClosingTag = () => {
 
 let addTextContentToElement = () => {
   if (textContent.indexOf('&#') == -1) {
-    outputJavaScript.value += `${parent}.textContent = '${textContent}';\n`;
+    outputJavaScript.value += `${parent}.textContent = \`${textContent}\`;\n`;
   } else {
-    outputJavaScript.value += `${parent}.innerHTML = '${textContent}';\n`;
+    outputJavaScript.value += `${parent}.innerHTML = \`${textContent}\`;\n`;
   }
   if (trimmedString[0] !== signs[1]) {
     removeFirstStringFromHtml();
@@ -249,12 +254,46 @@ let addSrcToElement = () => {
   outputJavaScript.value += `${name}.src = '${attrValue}';\n`;
 }
 
+let addStyleToElement = () => {
+  while (declarations.length !== 0 ) {
+    if (declarations[declarations.length - 1][0] !== '') {
+      property = declarations[declarations.length - 1][0].trim();
+      if (property.indexOf('-') !== -1) {
+        propertyLego = property.split('-');
+        property = propertyLego[0];
+        for (let i = 1; i < propertyLego.length; i++) {
+          property += propertyLego[i][0].toUpperCase() + propertyLego[i].slice(1);
+        }
+      }
+      propertyValue = declarations[declarations.length - 1][1].trim();
+      declarations.pop();
+      outputJavaScript.value += `${name}.style.${property} = '${propertyValue}';\n`;
+    } else {
+      declarations.pop();
+    }
+  }
+}
+
+let setStyles = () => {
+  styles = attrValue.split(';');
+  for (let i = 0; i < styles.length; i++) {
+    if (styles[i] !== '') {
+      styles[i] = styles[i].trim();
+      declarations.push(styles[i].split(':'));
+    }
+  }
+  addStyleToElement();
+}
+
 let getAttrValue = () => {
   let startIndex = trimmedString.indexOf('="') + 2;
   attrValue = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
   trimmedString = trimmedString.replace(`${attrName}="${attrValue}"`, '');
   if (attrName == 'src') {
     addSrcToElement();
+    checkAttributes();
+  } else if (attrName == 'style') {
+    setStyles();
     checkAttributes();
   } else {
     addIdToElement();
