@@ -400,7 +400,19 @@ let clearInputHtmlValue = () => {
   inputHtml.value = '';
 }
 
+let getBody = () => {
+  if (inputHtml.value.indexOf('<body') !== -1) {
+    let startIndex = inputHtml.value.indexOf('>', inputHtml.value.indexOf('<body') + 5);
+    let endIndex = (inputHtml.value.indexOf('<script', startIndex) !== -1) 
+    ? inputHtml.value.lastIndexOf('<script') 
+    : inputHtml.value.lastIndexOf('</body>');
+    inputHtml.value = inputHtml.value.slice(startIndex + 1, endIndex);
+    console.log(inputHtml.value);
+  }
+}
+
 let prepare = () => {
+  getBody();
   outputJavaScript.value = '';
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
   inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
