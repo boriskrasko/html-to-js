@@ -436,9 +436,20 @@ let prepare = () => {
   }
 }
 
+let logKey = (e) => {
+  if (e.which == 13) {
+    prepare();
+  }
+  if (e.which == 27) {
+    inputHtml.value = ``;
+    outputJavaScript.value = ``;
+  }
+}
+
 copyBtn.addEventListener('click', copyResult);
 copyBtn.addEventListener('mouseout', outFunc);
 inputHtml.addEventListener('click', clearInputHtmlValue);
+document.addEventListener('keydown', logKey);
 
 convertBtn.addEventListener('click', () => {
   prepare();
