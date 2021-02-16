@@ -80,13 +80,22 @@ let getIndexOfChar = (str, char) => {
 
 let getParent = () => {
   checkClosingTag();
-  if (!hasClosingTag) {
+  // if (!hasClosingTag) {
+  //   checkSingletonTags();
+  //   if (!isSingletonTags) {
+  //     tagToClose = tagName;
+  //     parent = name;
+  //     stackOfClosingTags.push(name);
+  //   }
+  // }
+  switch (hasClosingTag) {
+    case false:
     checkSingletonTags();
-    if (!isSingletonTags) {
+  } switch (isSingletonTags) {
+    case false:
       tagToClose = tagName;
       parent = name;
       stackOfClosingTags.push(name);
-    }
   }
 }
 
@@ -391,11 +400,7 @@ let clearInputHtmlValue = () => {
   inputHtml.value = '';
 }
 
-copyBtn.addEventListener('click', copyResult);
-copyBtn.addEventListener('mouseout', outFunc);
-inputHtml.addEventListener('click', clearInputHtmlValue);
-
-convertBtn.addEventListener('click', () => {
+let prepare = () => {
   outputJavaScript.value = '';
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
   inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
@@ -417,4 +422,12 @@ convertBtn.addEventListener('click', () => {
     getOpennigTag();
     inputHtml.value = 'Done!';
   }
+}
+
+copyBtn.addEventListener('click', copyResult);
+copyBtn.addEventListener('mouseout', outFunc);
+inputHtml.addEventListener('click', clearInputHtmlValue);
+
+convertBtn.addEventListener('click', () => {
+  prepare();
 })
