@@ -399,7 +399,7 @@ let getBody = () => {
   if (inputHtml.value.indexOf('<body') !== -1) {
     let startIndex = inputHtml.value.indexOf('>', inputHtml.value.indexOf('<body') + 5);
     let endIndex = (inputHtml.value.indexOf('<script', startIndex) !== -1) 
-    ? inputHtml.value.lastIndexOf('<script') 
+    ? inputHtml.value.indexOf('<script') 
     : inputHtml.value.lastIndexOf('</body>');
     inputHtml.value = inputHtml.value.slice(startIndex + 1, endIndex);
     console.log(inputHtml.value);
@@ -407,16 +407,16 @@ let getBody = () => {
 }
 
 let prepare = () => {
+ while (firstIndexOfComment !== -1) {
+  firstIndexOfComment = inputHtml.value.indexOf('<!--');
+  lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
+  comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
+  inputHtml.value = inputHtml.value.replace(comment, ``);
+  }
   getBody();
   outputJavaScript.value = '';
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
   inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
-  while (firstIndexOfComment !== -1) {
-    firstIndexOfComment = inputHtml.value.indexOf('<!--');
-    lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
-    comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
-    inputHtml.value = inputHtml.value.replace(comment, ``);
-  }
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
   logs.value = inputHtml.value;
   if (inputHtml.value[0] !== signs[1]) {
