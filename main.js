@@ -4,7 +4,7 @@ const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
 const tooltip = document.getElementById('myTooltip');
 const dot = document.querySelector('.dot');
-
+const logs = document.querySelector('.logs');
 
 const signs = ['\n', '<', ' ', ];
 
@@ -82,22 +82,15 @@ let getIndexOfChar = (str, char) => {
 
 let getParent = () => {
   checkClosingTag();
-  // if (!hasClosingTag) {
-  //   checkSingletonTags();
-  //   if (!isSingletonTags) {
-  //     tagToClose = tagName;
-  //     parent = name;
-  //     stackOfClosingTags.push(name);
-  //   }
-  // }
   switch (hasClosingTag) {
     case false:
     checkSingletonTags();
-  } switch (isSingletonTags) {
+  } 
+  switch (isSingletonTags) {
     case false:
-      tagToClose = tagName;
-      parent = name;
-      stackOfClosingTags.push(name);
+    tagToClose = tagName;
+    parent = name;
+    stackOfClosingTags.push(name);
   }
 }
 
@@ -158,7 +151,7 @@ let checkClosingTag = () => {
   if (hasClosingTag) {
     let startIndex = trimmedString.indexOf('</') + 2
     closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
-    if (closingTagName === tagName) {}
+    stackOfClosingTags.pop();
   }
 }
 
@@ -425,6 +418,7 @@ let prepare = () => {
     inputHtml.value = inputHtml.value.replace(comment, ``);
   }
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
+  logs.value = inputHtml.value;
   if (inputHtml.value[0] !== signs[1]) {
     outputJavaScript.value +=  `Your code must start with the '<'\n`;
   } else if (inputHtml.value[1] == signs[2]) {
@@ -439,9 +433,6 @@ let prepare = () => {
 }
 
 let logKey = (e) => {
-  // if (e.which == 13) {
-  //   prepare();
-  // }
   if (e.which == 27) {
     inputHtml.value = ``;
     outputJavaScript.value = ``;
