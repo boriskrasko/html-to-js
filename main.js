@@ -2,7 +2,9 @@ const inputHtml = document.querySelector('.input');
 const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
-const tooltip = document.getElementById("myTooltip");
+const tooltip = document.getElementById('myTooltip');
+const dot = document.querySelector('.dot');
+
 
 const signs = ['\n', '<', ' ', ];
 
@@ -80,13 +82,22 @@ let getIndexOfChar = (str, char) => {
 
 let getParent = () => {
   checkClosingTag();
-  if (!hasClosingTag) {
+  // if (!hasClosingTag) {
+  //   checkSingletonTags();
+  //   if (!isSingletonTags) {
+  //     tagToClose = tagName;
+  //     parent = name;
+  //     stackOfClosingTags.push(name);
+  //   }
+  // }
+  switch (hasClosingTag) {
+    case false:
     checkSingletonTags();
-    if (!isSingletonTags) {
+  } switch (isSingletonTags) {
+    case false:
       tagToClose = tagName;
       parent = name;
       stackOfClosingTags.push(name);
-    }
   }
 }
 
@@ -391,11 +402,19 @@ let clearInputHtmlValue = () => {
   inputHtml.value = '';
 }
 
-copyBtn.addEventListener('click', copyResult);
-copyBtn.addEventListener('mouseout', outFunc);
-inputHtml.addEventListener('click', clearInputHtmlValue);
+let getBody = () => {
+  if (inputHtml.value.indexOf('<body') !== -1) {
+    let startIndex = inputHtml.value.indexOf('>', inputHtml.value.indexOf('<body') + 5);
+    let endIndex = (inputHtml.value.indexOf('<script', startIndex) !== -1) 
+    ? inputHtml.value.lastIndexOf('<script') 
+    : inputHtml.value.lastIndexOf('</body>');
+    inputHtml.value = inputHtml.value.slice(startIndex + 1, endIndex);
+    console.log(inputHtml.value);
+  }
+}
 
-convertBtn.addEventListener('click', () => {
+let prepare = () => {
+  getBody();
   outputJavaScript.value = '';
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
   inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
@@ -417,4 +436,23 @@ convertBtn.addEventListener('click', () => {
     getOpennigTag();
     inputHtml.value = 'Done!';
   }
+}
+
+let logKey = (e) => {
+  // if (e.which == 13) {
+  //   prepare();
+  // }
+  if (e.which == 27) {
+    inputHtml.value = ``;
+    outputJavaScript.value = ``;
+  }
+}
+
+copyBtn.addEventListener('click', copyResult);
+copyBtn.addEventListener('mouseout', outFunc);
+inputHtml.addEventListener('click', clearInputHtmlValue);
+document.addEventListener('keydown', logKey);
+
+convertBtn.addEventListener('click', () => {
+  prepare();
 })
