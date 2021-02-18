@@ -406,19 +406,24 @@ let getBody = () => {
   }
 }
 
-let prepare = () => {
- while (firstIndexOfComment !== -1) {
-  firstIndexOfComment = inputHtml.value.indexOf('<!--');
-  lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
-  comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
-  inputHtml.value = inputHtml.value.replace(comment, ``);
+let removeComments = () => {
+  while (firstIndexOfComment !== -1) {
+    firstIndexOfComment = inputHtml.value.indexOf('<!--');
+    lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
+    comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
+    inputHtml.value = inputHtml.value.replace(comment, ``);
   }
-  getBody();
-  outputJavaScript.value = '';
+}
+
+let clearResultArea = () => outputJavaScript.value = ``;
+
+let addLineBreaks = () => {
   inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
   inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
   inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
-  logs.value = inputHtml.value;
+}
+
+let checkCodeStart = () => {
   if (inputHtml.value[0] !== signs[1]) {
     outputJavaScript.value +=  `Your code must start with the '<'\n`;
   } else if (inputHtml.value[1] == signs[2]) {
@@ -430,6 +435,14 @@ let prepare = () => {
     getOpennigTag();
     inputHtml.value = 'Done!';
   }
+}
+
+let prepare = () => {
+  removeComments();             
+  getBody();
+  clearResultArea();
+  addLineBreaks();
+  checkCodeStart();
 }
 
 let logKey = (e) => {
@@ -444,6 +457,6 @@ copyBtn.addEventListener('mouseout', outFunc);
 inputHtml.addEventListener('click', clearInputHtmlValue);
 document.addEventListener('keydown', logKey);
 
-convertBtn.addEventListener('click', () => {
-  prepare();
-})
+                convertBtn.addEventListener('click', () => {
+                  prepare();
+                })
