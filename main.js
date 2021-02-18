@@ -2,7 +2,9 @@ const inputHtml = document.querySelector('.input');
 const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
-const tooltip = document.getElementById("myTooltip");
+const tooltip = document.getElementById('myTooltip');
+const dot = document.querySelector('.dot');
+
 
 const signs = ['\n', '<', ' ', ];
 
@@ -436,9 +438,20 @@ let prepare = () => {
   }
 }
 
+let logKey = (e) => {
+  // if (e.which == 13) {
+  //   prepare();
+  // }
+  if (e.which == 27) {
+    inputHtml.value = ``;
+    outputJavaScript.value = ``;
+  }
+}
+
 copyBtn.addEventListener('click', copyResult);
 copyBtn.addEventListener('mouseout', outFunc);
 inputHtml.addEventListener('click', clearInputHtmlValue);
+document.addEventListener('keydown', logKey);
 
 convertBtn.addEventListener('click', () => {
   prepare();
