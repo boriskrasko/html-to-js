@@ -238,7 +238,11 @@ let getClassNames = () => {
 }
 
 let addIdToElement = () => {
-  outputJavaScript.value += `${name}.setAttribute(\`${attrName}\`, \`${attrValue}\`);\n`;
+  if (attrName === 'id') {
+    outputJavaScript.value += `${name}.id = '${attrValue}';\n`;
+  } else {
+    outputJavaScript.value += `${name}.setAttribute(\`${attrName}\`, \`${attrValue}\`);\n`;
+  }
 }
 
 let addSrcToElement = () => {
