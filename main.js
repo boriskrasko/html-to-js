@@ -153,9 +153,9 @@ let checkClosingTag = () => {
 
 let addTextContentToElement = () => {
   if (textContent.indexOf('&#') == -1) {
-    outputJavaScript.value += `${parent}.textContent = \`${textContent}\`;\n`;
+    outputJavaScript.value += `${parent}.textContent += \`${textContent}\`;\n`;
   } else {
-    outputJavaScript.value += `${parent}.innerHTML = \`${textContent}\`;\n`;
+    outputJavaScript.value += `${parent}.innerHTML += \`${textContent}\`;\n`;
   }
   if (trimmedString[0] !== `<`) {
     removeFirstStringFromHtml();
@@ -238,7 +238,7 @@ let getClassNames = () => {
 }
 
 let addIdToElement = () => {
-  outputJavaScript.value += `${name}.setAttribute('${attrName}', '${attrValue}');\n`;
+  outputJavaScript.value += `${name}.setAttribute('${attrName}', ${attrValue}');\n`;
 }
 
 let addSrcToElement = () => {
