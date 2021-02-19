@@ -237,7 +237,7 @@ let getClassNames = () => {
   addClassesToElement();
 }
 
-let addIdToElement = () => {
+let addAttrToElement = () => {
   if (attrName === 'id') {
     outputJavaScript.value += `${name}.id = '${attrValue}';\n`;
   } else {
@@ -291,7 +291,7 @@ let getAttrValue = () => {
     setStyles();
     checkAttributes();
   } else {
-    addIdToElement();
+    addAttrToElement();
     checkAttributes();
   }
 }
