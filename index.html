@@ -13,19 +13,22 @@
     <hr color="#eee">
     <br>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        This app can parse HTML to JavaScript (DOM). Including class names, ids, data attributes, text content, etc.
       </p>
+      <ul class="tutorial">
+        <li>Copy snippet or full HTML code from your editor</li>
+        <li>Paste it into HTML textarea</li>
+        <li>Click the arrow to convert</li>
+        <li>Copy result from JavaScript textarea and paste in your file .js</li>
+        <li>By default, the app append elements to the document.body</li>
+        <li>Element name = tag name + random id</li>
+      </ul>
   </header>
   <main>
     <div class="flex-container">
       <div>
         <h2>HTML</h2>
-        <textarea id="text-box" cols="60" rows="28" spellcheck="false" placeholder="HTML" class="input"></textarea>
+        <textarea id="text-box" cols="60" rows="16" spellcheck="false" placeholder="HTML" class="input"></textarea>
       </div>
       <div class="tooltip">
         <button class="convert-btn">
@@ -37,7 +40,7 @@
     <div class="flex-container">
       <div>
          <h2>JS</h2>
-        <textarea readonly="true" cols="60" rows="28" spellcheck="false" placeholder="JS" class="output"></textarea>
+        <textarea readonly="true" cols="60" rows="16" spellcheck="false" placeholder="JS" class="output"></textarea>
       </div>
       <div class="tooltip">
         <button class="copy-btn">
