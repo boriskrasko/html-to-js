@@ -93,7 +93,11 @@ let getName = () => {
 
 let createDOMElement = () => {
   getName();
-  outputJavaScript.value += `const ${name} = document.createElement('${tagName}');\n`;
+  if (tagName === 'img') {
+    outputJavaScript.value += `const ${name} = new Image();\n`;
+  } else {
+    outputJavaScript.value += `const ${name} = document.createElement('${tagName}');\n`;
+  }
   trimmedString = trimmedString.replace(`${tagName}`, '');
 }
 
