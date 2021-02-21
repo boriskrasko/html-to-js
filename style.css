@@ -5,17 +5,20 @@
 }
 
 body {
+  max-width: 1440px;
+  margin: 0 auto;
   font-family: Roboto, sans-serif;
   /*background: linear-gradient(to right, rgb(111, 208, 247), rgb(232, 250, 223));*/
 }
 
-h1, h2 {
+h2 {
   margin: 0 10px;
   color: #356;
+  font-size: 28px;
 }
 
-h2 {
-  font-size: 28px;
+h1 {
+  color: #356;
 }
 
 textarea {
@@ -70,6 +73,11 @@ svg:hover {
   cursor: pointer;
 }
 
+header {
+  width: 95%;
+  margin: 50px auto;
+}
+
 .flex-container {
   position: relative;
   display: flex;
@@ -86,6 +94,8 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   border: 2px solid rgb(248, 248, 246);
+  background: rgb(244, 244, 244);
+
   border-radius: 8px;
 }
 
@@ -132,6 +142,14 @@ main {
 footer {
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tutorial {
+  margin: 25px;
+  font-size: 12.8px;
+  line-height: 18px;
+  list-style-type: square;
 }
 
 @media screen and (max-width: 640px) {

@@ -3,10 +3,6 @@ const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
 const tooltip = document.getElementById('myTooltip');
-const dot = document.querySelector('.dot');
-
-
-const signs = ['\n', '<', ' ', ];
 
 const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'source', 'track', 'wbr'];
 
@@ -40,9 +36,7 @@ let propertyValue;
 let declarations = [];
 let propertyLego = [];
 
-let getLastCharOfString = (x) => {
-  lastCharOfString = x.indexOf(`\n`);
-}
+let getLastCharOfString = (x) => lastCharOfString = x.indexOf(`\n`);
 
 let checkSingletonTags = (tag) => {
   let x = false;
@@ -63,12 +57,10 @@ let createId = (length) => {
   return randomId;
 }
 
-let getStringFromHtmlCode = () => {
-  stringFromHtmlCode = inputHtml.value.slice(0, lastCharOfString);
-}
+let getStringFromHtmlCode = () => stringFromHtmlCode = inputHtml.value.slice(0, lastCharOfString);
 
 let removeFirstStringFromHtml = () => {
-  inputHtml.value = inputHtml.value.replace(stringFromHtmlCode + signs[0], '');
+  inputHtml.value = inputHtml.value.replace(stringFromHtmlCode + `\n`, '');
   getStringFromHtmlCode();
 }
 
@@ -82,22 +74,16 @@ let getIndexOfChar = (str, char) => {
 
 let getParent = () => {
   checkClosingTag();
-  // if (!hasClosingTag) {
-  //   checkSingletonTags();
-  //   if (!isSingletonTags) {
-  //     tagToClose = tagName;
-  //     parent = name;
-  //     stackOfClosingTags.push(name);
-  //   }
-  // }
   switch (hasClosingTag) {
     case false:
     checkSingletonTags();
-  } switch (isSingletonTags) {
+  } 
+  switch (isSingletonTags) {
     case false:
-      tagToClose = tagName;
-      parent = name;
-      stackOfClosingTags.push(name);
+    tagToClose = tagName;
+    parent = name;
+    stackOfClosingTags.push(name);
+    console.log(stackOfClosingTags)
   }
 }
 
@@ -150,48 +136,41 @@ let addChildToParent = () => {
   removeFirstStringFromHtml();
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
-  getOpennigTag();
+  checkOpeningTag();
+}
+
+let getClosingTag = () => {
+  let startIndex = trimmedString.indexOf('</') + 2;
+  closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
+  stackOfClosingTags.pop();
 }
 
 let checkClosingTag = () => {
   hasClosingTag = (trimmedString.indexOf('</') !== -1) ? true : false;
-  if (hasClosingTag) {
-    let startIndex = trimmedString.indexOf('</') + 2
-    closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
-    if (closingTagName === tagName) {}
-  }
+  if (hasClosingTag) getClosingTag();
 }
 
 let addTextContentToElement = () => {
   if (textContent.indexOf('&#') == -1) {
-    outputJavaScript.value += `${parent}.textContent = \`${textContent}\`;\n`;
+    outputJavaScript.value += `${parent}.textContent += \`${textContent}\`;\n`;
   } else {
-    outputJavaScript.value += `${parent}.innerHTML = \`${textContent}\`;\n`;
+    outputJavaScript.value += `${parent}.innerHTML += \`${textContent}\`;\n`;
   }
-  if (trimmedString[0] !== signs[1]) {
+  if (trimmedString[0] !== `<`) {
     removeFirstStringFromHtml();
     getLastCharOfString(inputHtml.value);
     getStringFromHtmlCode();
-    getOpennigTag();
+    checkOpeningTag();
   } else {
     addChildToParent();
   }
 }
 
 let checkTextContent = () => {
-  checkClosingTag();
-  let startIndex = trimmedString.indexOf('>') + 1;
-  if (hasClosingTag) {
-    textContent = trimmedString.slice(startIndex, trimmedString.lastIndexOf('</'))
-  } else {
-    textContent = trimmedString.slice(startIndex)
-  }
-  if (textContent === '' || textContent === ' ') {
-    addChildToParent();
-  } else if (textContent.trim()[0] == '<') {
-    trimmedString = textContent;
+  if (trimmedString === '' || trimmedString === ' ') {
     addChildToParent();
   } else {
+    textContent = trimmedString;
     addTextContentToElement();
   }
 }
@@ -205,7 +184,7 @@ let checkAttributesWithoutValue = () => {
   if (trimmedString.length === 0) {
     checkTextContent();
   } else if (trimmedString.indexOf(' ') !== -1) {
-    attr = trimmedString.slice(0, trimmedString.indexOf(' '))
+    attr = trimmedString.slice(0, trimmedString.indexOf(' '));
     trimmedString = trimmedString.replace(attr, ``);
     trimmedString = trimmedString.trim();
     outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`;
@@ -213,7 +192,9 @@ let checkAttributesWithoutValue = () => {
   }
   else {
     attr = trimmedString;
-    outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`
+    if (attr !== `/`) {
+      outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`
+    }
     trimmedString = trimmedString.replace(attr, ``);
     trimmedString = trimmedString.trim();
     checkTextContent();
@@ -257,8 +238,12 @@ let getClassNames = () => {
   addClassesToElement();
 }
 
-let addIdToElement = () => {
-  outputJavaScript.value += `${name}.setAttribute('${attrName}', '${attrValue}');\n`;
+let addAttrToElement = () => {
+  if (attrName === 'id') {
+    outputJavaScript.value += `${name}.id = '${attrValue}';\n`;
+  } else {
+    outputJavaScript.value += `${name}.setAttribute(\`${attrName}\`, \`${attrValue}\`);\n`;
+  }
 }
 
 let addSrcToElement = () => {
@@ -307,7 +292,7 @@ let getAttrValue = () => {
     setStyles();
     checkAttributes();
   } else {
-    addIdToElement();
+    addAttrToElement();
     checkAttributes();
   }
 }
@@ -338,49 +323,51 @@ let getAttr = () => {
 }
 
 let checkRightTagName = () => {
-  isTagNameRight = /\W/.test(tagName) + /-/.test(tagName);
+  isTagNameRight = !/\W/.test(tagName) + /-/.test(tagName);
 };
 
-let getOpennigTag = () => {
+let trimString = () => trimmedString = trimmedString.replace('>', ' >');
+
+let getOpeningTag = () => {
+  getIndexOfChar(trimmedString, ' ');
+  indexOfSpace = indexOfChar;
+  if (indexOfSpace === -1 && trimmedString[trimmedString.length - 1] === '>') {
+    opennigTag = trimmedString.slice(1, trimmedString.length - 1);
+    tagName = opennigTag;
+    createDOMElement();
+  } else {
+    opennigTag = trimmedString.slice(1, indexOfSpace);
+    tagName = opennigTag;
+    checkRightTagName();
+    if (isTagNameRight) {
+      createDOMElement();
+      getAttr();
+    } else if (tagName[0] !== '/') {
+        outputJavaScript.value += `Incorrect tag name\n`;
+    }
+  }
+}
+
+let checkOpeningTag = () => {
   getTrimmedString();
   createId(5);
   if (trimmedString[1] === '/') {
-    getParent();
+    // getParent();
+    console.log(stackOfClosingTags)
     stackOfClosingTags.pop();
     parent = stackOfClosingTags[stackOfClosingTags.length - 1];
     removeFirstStringFromHtml();
     getLastCharOfString(inputHtml.value);
     getStringFromHtmlCode();
-    getOpennigTag();
+    checkOpeningTag();
   } else {
-    trimmedString = trimmedString.replace('>', ' >');
+    trimString();
     if (trimmedString.indexOf('Done') !== -1) {
       outputJavaScript.value += ``;
-    } else if (trimmedString[0] !== signs[1]) {
-      textContent = trimmedString;
-      addTextContentToElement();
+    } else if (trimmedString[0] !== `<`) {
+      checkTextContent();
     } else {
-      getIndexOfChar(trimmedString, ' ');
-      indexOfSpace = indexOfChar;
-      if (indexOfSpace === -1) {
-        if (trimmedString[trimmedString.length - 1] == '>') {
-          opennigTag = trimmedString.slice(1, trimmedString.length - 1);
-          tagName = opennigTag;
-          createDOMElement();
-        }
-      } else {
-        opennigTag = trimmedString.slice(1, indexOfSpace);
-        tagName = opennigTag;
-        checkRightTagName();
-        if (!isTagNameRight) {
-          createDOMElement();
-          getAttr();
-        } else {
-          if (tagName[0] !== '/') {
-            outputJavaScript.value += `Incorrect tag name\n`;
-          }
-        }
-      }
+      getOpeningTag()
     }
   }
 }
@@ -406,42 +393,54 @@ let getBody = () => {
   if (inputHtml.value.indexOf('<body') !== -1) {
     let startIndex = inputHtml.value.indexOf('>', inputHtml.value.indexOf('<body') + 5);
     let endIndex = (inputHtml.value.indexOf('<script', startIndex) !== -1) 
-    ? inputHtml.value.lastIndexOf('<script') 
+    ? inputHtml.value.indexOf('<script') 
     : inputHtml.value.lastIndexOf('</body>');
     inputHtml.value = inputHtml.value.slice(startIndex + 1, endIndex);
-    console.log(inputHtml.value);
   }
 }
 
-let prepare = () => {
-  getBody();
-  outputJavaScript.value = '';
-  inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
-  inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
+let removeComments = () => {
   while (firstIndexOfComment !== -1) {
     firstIndexOfComment = inputHtml.value.indexOf('<!--');
     lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
     comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
     inputHtml.value = inputHtml.value.replace(comment, ``);
   }
-  inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
-  if (inputHtml.value[0] !== signs[1]) {
+}
+
+let clearResultArea = () => outputJavaScript.value = ``;
+
+let addLineBreaks = () => {
+  inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
+  inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
+}
+
+let removeEmptyLines = () => inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
+
+let checkCodeStart = () => {
+  if (inputHtml.value[0] !== `<`) {
     outputJavaScript.value +=  `Your code must start with the '<'\n`;
-  } else if (inputHtml.value[1] == signs[2]) {
+  } else if (inputHtml.value[1] == ` `) {
     outputJavaScript.value += `There can be no space after '<'\n`;
   } else {
-    inputHtml.value += 'Done!\n';
+    inputHtml.value += `Done!\n`;
     getLastCharOfString(inputHtml.value);
     getStringFromHtmlCode();
-    getOpennigTag();
-    inputHtml.value = 'Done!';
+    checkOpeningTag();
+    inputHtml.value = `Done!`;
   }
 }
 
+let prepare = () => {
+  removeComments();             
+  getBody();
+  clearResultArea();
+  addLineBreaks();
+  removeEmptyLines();
+  checkCodeStart();
+}
+
 let logKey = (e) => {
-  // if (e.which == 13) {
-  //   prepare();
-  // }
   if (e.which == 27) {
     inputHtml.value = ``;
     outputJavaScript.value = ``;
