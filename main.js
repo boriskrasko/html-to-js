@@ -3,8 +3,6 @@ const outputJavaScript = document.querySelector('.output');
 const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
 const tooltip = document.getElementById('myTooltip');
-const dot = document.querySelector('.dot');
-const logs = document.querySelector('.logs');
 
 const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'source', 'track', 'wbr'];
 
@@ -85,6 +83,7 @@ let getParent = () => {
     tagToClose = tagName;
     parent = name;
     stackOfClosingTags.push(name);
+    console.log(stackOfClosingTags)
   }
 }
 
@@ -185,7 +184,7 @@ let checkAttributesWithoutValue = () => {
   if (trimmedString.length === 0) {
     checkTextContent();
   } else if (trimmedString.indexOf(' ') !== -1) {
-    attr = trimmedString.slice(0, trimmedString.indexOf(' '))
+    attr = trimmedString.slice(0, trimmedString.indexOf(' '));
     trimmedString = trimmedString.replace(attr, ``);
     trimmedString = trimmedString.trim();
     outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`;
@@ -193,7 +192,9 @@ let checkAttributesWithoutValue = () => {
   }
   else {
     attr = trimmedString;
-    outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`
+    if (attr !== `/`) {
+      outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`
+    }
     trimmedString = trimmedString.replace(attr, ``);
     trimmedString = trimmedString.trim();
     checkTextContent();
@@ -237,8 +238,12 @@ let getClassNames = () => {
   addClassesToElement();
 }
 
-let addIdToElement = () => {
-  outputJavaScript.value += `${name}.setAttribute(\`${attrName}\`, \`${attrValue}\`);\n`;
+let addAttrToElement = () => {
+  if (attrName === 'id') {
+    outputJavaScript.value += `${name}.id = '${attrValue}';\n`;
+  } else {
+    outputJavaScript.value += `${name}.setAttribute(\`${attrName}\`, \`${attrValue}\`);\n`;
+  }
 }
 
 let addSrcToElement = () => {
@@ -287,7 +292,7 @@ let getAttrValue = () => {
     setStyles();
     checkAttributes();
   } else {
-    addIdToElement();
+    addAttrToElement();
     checkAttributes();
   }
 }
@@ -347,7 +352,8 @@ let checkOpeningTag = () => {
   getTrimmedString();
   createId(5);
   if (trimmedString[1] === '/') {
-    getParent();
+    // getParent();
+    console.log(stackOfClosingTags)
     stackOfClosingTags.pop();
     parent = stackOfClosingTags[stackOfClosingTags.length - 1];
     removeFirstStringFromHtml();
@@ -431,7 +437,6 @@ let prepare = () => {
   clearResultArea();
   addLineBreaks();
   removeEmptyLines();
-  logs.value = inputHtml.value;
   checkCodeStart();
 }
 
