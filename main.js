@@ -245,6 +245,8 @@ let getClassNames = () => {
 let addAttrToElement = () => {
   if (attrName === 'id') {
     outputJavaScript.value += `${name}.id = '${attrValue}';\n`;
+  } else if (attrName === 'href') {
+    outputJavaScript.value += `${name}.href = '${attrValue}';\n`;
   } else {
     outputJavaScript.value += `${name}.setAttribute(\`${attrName}\`, \`${attrValue}\`);\n`;
   }
