@@ -5,6 +5,8 @@ const copyBtn = document.querySelector('.copy-btn');
 const tooltip = document.getElementById('myTooltip');
 
 const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'source', 'track', 'wbr'];
+const declarations = [];
+const stackOfClosingTags = [];
 
 let lastCharOfString;
 let stringFromHtmlCode;
@@ -16,15 +18,15 @@ let hasClass;
 let classContent;
 let classesCount = 0;
 let className;
+let classNames;
 let classContentBeforeTrimming;
 let attrName;
+let attrValue;
 let hasClosingTag;
 let textContent;
 let name;
 let parent;
-let tagToClose;
 let randomId;
-let stackOfClosingTags = [];
 let isSingletonTags;
 let firstIndexOfComment;
 let lastIndexOfComment;
@@ -33,65 +35,68 @@ let attr;
 let styles = [];
 let property;
 let propertyValue;
-let declarations = [];
 let propertyLego = [];
+let indexOfChar;
+let hasAttr;
+let isTagNameRight;
+let checkOpeningTag;
+let getAttrName;
 
-let getLastCharOfString = (x) => lastCharOfString = x.indexOf(`\n`);
+const getLastCharOfString = (x) => {
+  lastCharOfString = x.indexOf('\n');
+};
 
-let checkSingletonTags = (tag) => {
+const checkSingletonTags = () => {
   let x = false;
-  for (let i = 0; i < singletonTags.length; i++) {
-    if (singletonTags[i] == tagName) {
+  for (let i = 0; i < singletonTags.length; i += 1) {
+    if (singletonTags[i] === tagName) {
       x = true;
     }
   }
   isSingletonTags = x;
-}
+};
 
-let createId = (length) => {
-  randomId = ``;
-  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  for (let i = 0; i < length; i++) {
+const createId = (length) => {
+  randomId = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  for (let i = 0; i < length; i += 1) {
     randomId += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return randomId;
-}
+};
 
-let getStringFromHtmlCode = () => stringFromHtmlCode = inputHtml.value.slice(0, lastCharOfString);
+const getStringFromHtmlCode = () => {
+  stringFromHtmlCode = inputHtml.value.slice(0, lastCharOfString);
+};
 
-let removeFirstStringFromHtml = () => {
-  inputHtml.value = inputHtml.value.replace(stringFromHtmlCode + `\n`, '');
+const removeFirstStringFromHtml = () => {
+  inputHtml.value = inputHtml.value.replace(`${stringFromHtmlCode}\n`, '');
   getStringFromHtmlCode();
-}
+};
 
-let getTrimmedString = () => {
+const getTrimmedString = () => {
   trimmedString = stringFromHtmlCode.trim();
-}
+};
 
-let getIndexOfChar = (str, char) => {
+const getIndexOfChar = (str, char) => {
   indexOfChar = str.indexOf(char);
-}
+};
 
-let getParent = () => {
-  checkClosingTag();
-  switch (hasClosingTag) {
-    case false:
+const getParent = () => {
+  if (!hasClosingTag) {
     checkSingletonTags();
-  } 
-  switch (isSingletonTags) {
-    case false:
-    tagToClose = tagName;
+  }
+  if (!isSingletonTags) {
     parent = name;
     stackOfClosingTags.push(name);
-    console.log(stackOfClosingTags)
   }
-}
+};
 
-let getName = () => {
+const getName = () => {
   name = `${tagName}_${randomId}`;
-}
+};
 
-let createDOMElement = () => {
+const createDOMElement = () => {
   getName();
   if (tagName === 'img') {
     outputJavaScript.value += `const ${name} = new Image();\n`;
@@ -99,68 +104,57 @@ let createDOMElement = () => {
     outputJavaScript.value += `const ${name} = document.createElement('${tagName}');\n`;
   }
   trimmedString = trimmedString.replace(`${tagName}`, '');
-}
+};
 
-let checkClass = () => {
-  hasClass = (trimmedString.indexOf('class') !== -1) ? true : false;
-}
+const checkClass = () => {
+  hasClass = (trimmedString.indexOf('class') !== -1);
+};
 
-let getClassContent = () => {
-  let startIndex = trimmedString.indexOf('class="') + 7;
+const getClassContent = () => {
+  const startIndex = trimmedString.indexOf('class="') + 7;
   trimmedString = trimmedString.replace(/ +"/g, '"').trim();
   classContent = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
-}
+};
 
-let removeExtraSpacesFromClassContent = () => {
+const removeExtraSpacesFromClassContent = () => {
   classContentBeforeTrimming = classContent;
   classContent = classContent.replace(/ +/g, ' ').trim();
-}
+};
 
-let checkClassesCount = () => {
+const checkClassesCount = () => {
   classesCount = 1;
   getClassContent();
-  classContent = classContent.trim()
+  classContent = classContent.trim();
   if (classContent.indexOf(' ') === -1) {
     classesCount = 1;
     removeExtraSpacesFromClassContent();
   } else {
     removeExtraSpacesFromClassContent();
-    for (let i = 0; i < classContent.length; i++) {
-      if (classContent[i] == ' ') {
-        classesCount++;
+    for (let i = 0; i < classContent.length; i += 1) {
+      if (classContent[i] === ' ') {
+        classesCount += 1;
       }
     }
   }
-}
+};
 
-let addChildToParent = () => {
-  if (parent === undefined) parent = `document.body`;
+const addChildToParent = () => {
+  if (parent === undefined) parent = 'document.body';
   outputJavaScript.value += `${parent}.appendChild(${name});\n`;
   getParent();
   removeFirstStringFromHtml();
   getLastCharOfString(inputHtml.value);
   getStringFromHtmlCode();
   checkOpeningTag();
-}
+};
 
-let getClosingTag = () => {
-  let startIndex = trimmedString.indexOf('</') + 2;
-  closingTagName = trimmedString.slice(startIndex, trimmedString.indexOf('>', startIndex));
-  stackOfClosingTags.pop();
-}
-
-let checkClosingTag = () => {
-  hasClosingTag = (trimmedString.indexOf('</') !== -1) ? true : false;
-  if (hasClosingTag) getClosingTag();
-}
-
-let addTextContentToElement = () => {
-  if (textContent.indexOf('&#') == -1) {
+const addTextContentToElement = () => {
+  if (textContent.indexOf('&#') === -1) {
     outputJavaScript.value += `${parent}.textContent += \`${textContent}\`;\n`;
   } else {
     outputJavaScript.value += `${parent}.innerHTML += \`${textContent}\`;\n`;
   }
-  if (trimmedString[0] !== `<`) {
+  if (trimmedString[0] !== '<') {
     removeFirstStringFromHtml();
     getLastCharOfString(inputHtml.value);
     getStringFromHtmlCode();
@@ -168,53 +162,52 @@ let addTextContentToElement = () => {
   } else {
     addChildToParent();
   }
-}
+};
 
-let checkTextContent = () => {
+const checkTextContent = () => {
   if (trimmedString === '' || trimmedString === ' ') {
     addChildToParent();
   } else {
     textContent = trimmedString;
     addTextContentToElement();
   }
-}
+};
 
-let checkAttributesWithoutValue = () => {
+const checkAttributesWithoutValue = () => {
   if (trimmedString.indexOf('<') !== -1) {
-    trimmedString = trimmedString.replace('<', ``);
-    trimmedString = trimmedString.replace('>', ``);
+    trimmedString = trimmedString.replace('<', '');
+    trimmedString = trimmedString.replace('>', '');
     trimmedString = trimmedString.trim();
   }
   if (trimmedString.length === 0) {
     checkTextContent();
   } else if (trimmedString.indexOf(' ') !== -1) {
     attr = trimmedString.slice(0, trimmedString.indexOf(' '));
-    trimmedString = trimmedString.replace(attr, ``);
+    trimmedString = trimmedString.replace(attr, '');
     trimmedString = trimmedString.trim();
     outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`;
     checkAttributesWithoutValue();
-  }
-  else {
+  } else {
     attr = trimmedString;
-    if (attr !== `/`) {
-      outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`
+    if (attr !== '/') {
+      outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`;
     }
-    trimmedString = trimmedString.replace(attr, ``);
+    trimmedString = trimmedString.replace(attr, '');
     trimmedString = trimmedString.trim();
     checkTextContent();
   }
-}
+};
 
-let checkAttributes = () => {
-  hasAttr = (trimmedString.indexOf(`"`) !== -1) ? true : false;
+const checkAttributes = () => {
+  hasAttr = (trimmedString.indexOf('"') !== -1);
   if (hasAttr) {
     getAttrName();
   } else {
     checkAttributesWithoutValue();
   }
-}
+};
 
-let addClassToElement = () => {
+const addClassToElement = () => {
   className.trim();
   if (className.length !== 0) {
     outputJavaScript.value += `${name}.classList.add('${className}');\n`;
@@ -224,25 +217,25 @@ let addClassToElement = () => {
     trimmedString = trimmedString.replace(`class="${classContent}"`, '');
     checkAttributes();
   }
-}
+};
 
-let getClassName = () => {
+const getClassName = () => {
   className = classContent;
   addClassToElement();
-}
+};
 
-let addClassesToElement = () => {
+const addClassesToElement = () => {
   className = classNames;
   addClassToElement();
-}
+};
 
-let getClassNames = () => {
-  re = / /gi;
-  classNames = classContent.replace(re, `', '`);
+const getClassNames = () => {
+  const re = / /gi;
+  classNames = classContent.replace(re, '\', \'');
   addClassesToElement();
-}
+};
 
-let addAttrToElement = () => {
+const addAttrToElement = () => {
   if (attrName === 'id') {
     outputJavaScript.value += `${name}.id = '${attrValue}';\n`;
   } else if (attrName === 'href') {
@@ -250,20 +243,21 @@ let addAttrToElement = () => {
   } else {
     outputJavaScript.value += `${name}.setAttribute(\`${attrName}\`, \`${attrValue}\`);\n`;
   }
-}
+};
 
-let addSrcToElement = () => {
+const addSrcToElement = () => {
   outputJavaScript.value += `${name}.src = '${attrValue}';\n`;
-}
+};
 
-let addStyleToElement = () => {
-  while (declarations.length !== 0 ) {
+const addStyleToElement = () => {
+  while (declarations.length !== 0) {
     if (declarations[declarations.length - 1][0] !== '') {
       property = declarations[declarations.length - 1][0].trim();
       if (property.indexOf('-') !== -1) {
         propertyLego = property.split('-');
+        // eslint-disable-next-line prefer-destructuring
         property = propertyLego[0];
-        for (let i = 1; i < propertyLego.length; i++) {
+        for (let i = 1; i < propertyLego.length; i += 1) {
           property += propertyLego[i][0].toUpperCase() + propertyLego[i].slice(1);
         }
       }
@@ -274,37 +268,37 @@ let addStyleToElement = () => {
       declarations.pop();
     }
   }
-}
+};
 
-let setStyles = () => {
+const setStyles = () => {
   styles = attrValue.split(';');
-  for (let i = 0; i < styles.length; i++) {
+  for (let i = 0; i < styles.length; i += 1) {
     if (styles[i] !== '') {
       styles[i] = styles[i].trim();
       declarations.push(styles[i].split(':'));
     }
   }
   addStyleToElement();
-}
+};
 
-let getAttrValue = () => {
-  let startIndex = trimmedString.indexOf('="') + 2;
+const getAttrValue = () => {
+  const startIndex = trimmedString.indexOf('="') + 2;
   attrValue = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
   trimmedString = trimmedString.replace(`${attrName}="${attrValue}"`, '');
-  if (attrName == 'src') {
+  if (attrName === 'src') {
     addSrcToElement();
     checkAttributes();
-  } else if (attrName == 'style') {
+  } else if (attrName === 'style') {
     setStyles();
     checkAttributes();
   } else {
     addAttrToElement();
     checkAttributes();
   }
-}
+};
 
-let getAttrName = () => {
-  let startIndex = trimmedString.indexOf('=');
+getAttrName = () => {
+  const startIndex = trimmedString.indexOf('=');
   if (startIndex !== -1) {
     attrName = trimmedString.slice(trimmedString.lastIndexOf(' ', startIndex - 2) + 1, startIndex);
     attrName = attrName.trim();
@@ -312,9 +306,9 @@ let getAttrName = () => {
   } else {
     checkTextContent();
   }
-}
+};
 
-let getAttr = () => {
+const getAttr = () => {
   checkClass();
   if (hasClass) {
     checkClassesCount();
@@ -326,15 +320,17 @@ let getAttr = () => {
   } else {
     checkAttributes();
   }
-}
+};
 
-let checkRightTagName = () => {
+const checkRightTagName = () => {
   isTagNameRight = !/\W/.test(tagName) + /-/.test(tagName);
 };
 
-let trimString = () => trimmedString = trimmedString.replace('>', ' >');
+const trimString = () => {
+  trimmedString = trimmedString.replace('>', ' >');
+};
 
-let getOpeningTag = () => {
+const getOpeningTag = () => {
   getIndexOfChar(trimmedString, ' ');
   indexOfSpace = indexOfChar;
   if (indexOfSpace === -1 && trimmedString[trimmedString.length - 1] === '>') {
@@ -349,17 +345,16 @@ let getOpeningTag = () => {
       createDOMElement();
       getAttr();
     } else if (tagName[0] !== '/') {
-        outputJavaScript.value += `Incorrect tag name\n`;
+      outputJavaScript.value += 'Incorrect tag name\n';
     }
   }
-}
+};
 
-let checkOpeningTag = () => {
+checkOpeningTag = () => {
   getTrimmedString();
   createId(5);
   if (trimmedString[1] === '/') {
     // getParent();
-    console.log(stackOfClosingTags)
     stackOfClosingTags.pop();
     parent = stackOfClosingTags[stackOfClosingTags.length - 1];
     removeFirstStringFromHtml();
@@ -369,89 +364,92 @@ let checkOpeningTag = () => {
   } else {
     trimString();
     if (trimmedString.indexOf('Done') !== -1) {
-      outputJavaScript.value += ``;
-    } else if (trimmedString[0] !== `<`) {
+      outputJavaScript.value += '';
+    } else if (trimmedString[0] !== '<') {
       checkTextContent();
     } else {
-      getOpeningTag()
+      getOpeningTag();
     }
   }
-}
+};
 
-let copyResult = () => {
+const copyResult = () => {
   outputJavaScript.select();
   outputJavaScript.setSelectionRange(0, 99999);
   document.execCommand('copy');
 
-  tooltip.innerHTML = `Copied`;
-}
+  tooltip.innerHTML = 'Copied';
+};
 
-let outFunc = () => {
-  tooltip.innerHTML = `Copy to clipboard`;
-}
+const outFunc = () => {
+  tooltip.innerHTML = 'Copy to clipboard';
+};
 
-let clearInputHtmlValue = () => {
-  if (inputHtml.value.indexOf('Done!') !== -1)
-  inputHtml.value = '';
-}
+const clearInputHtmlValue = () => {
+  if (inputHtml.value.indexOf('Done!') !== -1) inputHtml.value = '';
+};
 
-let getBody = () => {
+const getBody = () => {
   if (inputHtml.value.indexOf('<body') !== -1) {
-    let startIndex = inputHtml.value.indexOf('>', inputHtml.value.indexOf('<body') + 5);
-    let endIndex = (inputHtml.value.indexOf('<script', startIndex) !== -1) 
-    ? inputHtml.value.indexOf('<script') 
-    : inputHtml.value.lastIndexOf('</body>');
+    const startIndex = inputHtml.value.indexOf('>', inputHtml.value.indexOf('<body') + 5);
+    const endIndex = (inputHtml.value.indexOf('<script', startIndex) !== -1)
+      ? inputHtml.value.indexOf('<script')
+      : inputHtml.value.lastIndexOf('</body>');
     inputHtml.value = inputHtml.value.slice(startIndex + 1, endIndex);
   }
-}
+};
 
-let removeComments = () => {
+const removeComments = () => {
   while (firstIndexOfComment !== -1) {
     firstIndexOfComment = inputHtml.value.indexOf('<!--');
     lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
     comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
-    inputHtml.value = inputHtml.value.replace(comment, ``);
+    inputHtml.value = inputHtml.value.replace(comment, '');
   }
-}
+};
 
-let clearResultArea = () => outputJavaScript.value = ``;
+const clearResultArea = () => {
+  outputJavaScript.value = '';
+};
 
-let addLineBreaks = () => {
-  inputHtml.value = inputHtml.value.replace(/</gi, `\n<`);
-  inputHtml.value = inputHtml.value.replace(/>/gi, `>\n`);
-}
+const addLineBreaks = () => {
+  inputHtml.value = inputHtml.value.replace(/</gi, '\n<');
+  inputHtml.value = inputHtml.value.replace(/>/gi, '>\n');
+};
 
-let removeEmptyLines = () => inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, ``);
+const removeEmptyLines = () => {
+  inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, '');
+};
 
-let checkCodeStart = () => {
-  if (inputHtml.value[0] !== `<`) {
-    outputJavaScript.value +=  `Your code must start with the '<'\n`;
-  } else if (inputHtml.value[1] == ` `) {
-    outputJavaScript.value += `There can be no space after '<'\n`;
+const checkCodeStart = () => {
+  if (inputHtml.value[0] !== '<') {
+    outputJavaScript.value += 'Your code must start with the \'<\'\n';
+  } else if (inputHtml.value[1] === ' ') {
+    outputJavaScript.value += 'There can be no space after \'<\'\n';
   } else {
-    inputHtml.value += `Done!\n`;
+    inputHtml.value += 'Done!\n';
     getLastCharOfString(inputHtml.value);
     getStringFromHtmlCode();
     checkOpeningTag();
-    inputHtml.value = `Done!`;
+    inputHtml.value = 'Done!';
   }
-}
+};
 
-let prepare = () => {
-  removeComments();             
+const prepare = () => {
+  removeComments();
   getBody();
   clearResultArea();
   addLineBreaks();
   removeEmptyLines();
   checkCodeStart();
-}
+};
 
-let logKey = (e) => {
-  if (e.which == 27) {
-    inputHtml.value = ``;
-    outputJavaScript.value = ``;
+const logKey = (e) => {
+  if (e.which === 27) {
+    inputHtml.value = '';
+    outputJavaScript.value = '';
   }
-}
+};
 
 copyBtn.addEventListener('click', copyResult);
 copyBtn.addEventListener('mouseout', outFunc);
@@ -460,4 +458,4 @@ document.addEventListener('keydown', logKey);
 
 convertBtn.addEventListener('click', () => {
   prepare();
-})
+});
