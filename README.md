@@ -2,5 +2,5 @@
 
 # [App](https://boriskrasko.github.io/html-to-js)
 
-![App](https://boriskrasko.github.io/html-to-js/pages/html-to-js.png)
+![App](https://boriskrasko.github.io/html-to-js/pages/screen.png)
 
