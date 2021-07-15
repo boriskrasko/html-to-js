@@ -152,6 +152,18 @@ footer {
   list-style-type: square;
 }
 
+.asign {
+  margin: 0 auto;
+  color: #777;
+  font-size: 12px;
+}
+
+.github {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 @media screen and (max-width: 640px) {
   textarea {width: 95%; min-width: 300px;}
   main {width: 98%}
