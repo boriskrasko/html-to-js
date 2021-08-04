@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML to JS</title>
+  <title>HTML to JS | JavaScript converter</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
   <header>
     <h1>HTML to JS converter</h1>
-    <br>
-    <hr color="#eee">
-    <br>
+    <hr>
       <p>
         This app can parse HTML to JavaScript (DOM). Including class names, ids, data attributes, text content, etc.
       </p>
@@ -33,19 +31,19 @@
       <div class="tooltip">
         <button class="convert-btn">
           <span class="tooltiptext">Convert to JavaScript</span>
-          <img src="icons/next.svg">
+          <img src="icons/next.svg" alt="arrow">
         </button>
       </div>
     </div>
     <div class="flex-container">
       <div>
          <h2>JS</h2>
-        <textarea readonly="true" cols="60" rows="16" spellcheck="false" placeholder="JS" class="output"></textarea>
+        <textarea readonly cols="60" rows="16" spellcheck="false" placeholder="JS" class="output"></textarea>
       </div>
       <div class="tooltip">
         <button class="copy-btn">
         <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-          <img src="icons/copy.svg">
+          <img src="icons/copy.svg" alt="copy">
         </button>
       </div>
     </div>

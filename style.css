@@ -8,7 +8,6 @@ body {
   max-width: 1440px;
   margin: 0 auto;
   font-family: Roboto, sans-serif;
-  /*background: linear-gradient(to right, rgb(111, 208, 247), rgb(232, 250, 223));*/
 }
 
 h2 {
@@ -76,6 +75,13 @@ svg:hover {
 header {
   width: 95%;
   margin: 50px auto;
+}
+
+hr {
+  height: 2px;
+  border: none;
+  background: #eee;
+  margin: 20px 0;
 }
 
 .flex-container {
