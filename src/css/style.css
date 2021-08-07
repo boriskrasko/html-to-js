@@ -1,0 +1,175 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+  max-width: 1440px;
+  margin: 0 auto;
+  font-family: Roboto, sans-serif;
+}
+
+h2 {
+  margin: 0 10px;
+  color: #2e2e2e;
+  font-size: 28px;
+}
+
+h1 {
+  color: #2a2a2a;
+}
+
+textarea {
+  max-width: 1200px;
+  min-width: 480px;
+  min-height: 220px;
+  margin: 10px 10px;
+  padding: 5px 10px;
+  color: #2a2a2a;
+  border: 1px solid rgb(228, 228, 226);
+  border-radius: 6px;
+  transition: 0.1s background ease-in-out;
+}
+
+textarea:focus {
+  outline: none;
+  border: 1px solid #aaa;
+}
+
+textarea:hover {
+  background: rgb(252, 252, 252);
+}
+
+button {
+  width: 40px;
+  cursor: pointer;
+  margin: 0 10px 15px;
+  padding: 6px 8px;
+  background: transparent;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  transition: 0.1s background ease-in-out;
+}
+
+button:hover {
+  background: #e4e4e4;
+  border: 1px solid #f4f4f4
+}
+
+button img:hover {
+  transition: 0.1s transform ease-in-out;
+}
+
+button img:hover {
+  transform: scale(0.9);
+}
+
+svg:hover {
+  fill: rgb(62, 65, 69);
+  cursor: pointer;
+}
+
+header {
+  width: 95%;
+  margin: 50px auto;
+}
+
+hr {
+  height: 2px;
+  border: none;
+  background: #eee;
+  margin: 20px 0;
+}
+
+.flex-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+main {
+  width: 95%;
+  margin: 50px auto;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border: 2px solid rgb(248, 248, 246);
+  background: rgb(224, 224, 224);
+  border-radius: 8px;
+}
+
+.tooltip {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: -50%;
+  left: -50%;
+  margin-left: -35px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  margin-left: 20px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tutorial {
+  margin: 25px;
+  font-size: 12.8px;
+  line-height: 18px;
+  list-style-type: square;
+}
+
+.asign {
+  margin: 0 auto;
+  color: #444;
+  font-size: 12px;
+}
+
+.github {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@media screen and (max-width: 640px) {
+  textarea {width: 95%; min-width: 300px;}
+  main {width: 98%}
+}
