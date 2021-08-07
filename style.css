@@ -12,12 +12,12 @@ body {
 
 h2 {
   margin: 0 10px;
-  color: #356;
+  color: #2e2e2e;
   font-size: 28px;
 }
 
 h1 {
-  color: #356;
+  color: #2a2a2a;
 }
 
 textarea {
@@ -26,7 +26,7 @@ textarea {
   min-height: 220px;
   margin: 10px 10px;
   padding: 5px 10px;
-  color: #356;
+  color: #2a2a2a;
   border: 1px solid rgb(228, 228, 226);
   border-radius: 6px;
   transition: 0.1s background ease-in-out;
@@ -68,7 +68,7 @@ button img:hover {
 }
 
 svg:hover {
-  fill: rgb(105, 115, 126);
+  fill: rgb(62, 65, 69);
   cursor: pointer;
 }
 
@@ -100,8 +100,7 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   border: 2px solid rgb(248, 248, 246);
-  background: rgb(244, 244, 244);
-
+  background: rgb(224, 224, 224);
   border-radius: 8px;
 }
 
@@ -160,7 +159,7 @@ footer {
 
 .asign {
   margin: 0 auto;
-  color: #777;
+  color: #444;
   font-size: 12px;
 }
 
