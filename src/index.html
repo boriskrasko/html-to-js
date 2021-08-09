@@ -1,29 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+     })(window,document,'script','dataLayer','UA-170087148-1');</script>
+	<meta charset="utf-8">
 	<title>HTML to JavaScript online converter</title>
+  <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/faviconapple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/faviconfavicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Online converter HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta name="keywords" content="HTML, JS, JavaScript, online converter, DOM, create element, append child, Node, attributtes, classes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta property="og:title" content="HTML to JS | online converter creating DOM (Document Object Model) Nodes">
+  <meta property="og:site_name" content="htmltojs.com">
+  <meta property="og:url" content="https://htmltojs.com">
+  <meta property="og:type" content="html-content">
+  <meta property="og:description" content="Online converter HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.">
+  <meta property="og:image" content="https://htmltojs.com/icons/logo.svg">
   </head>
+  <body>
+    <noscript><iframe class="gmp-noscript-iframe"
+      src="https://www.googletagmanager.com/ns.html?id=UA-170087148-1"></iframe></noscript>
+    <div id="fb-root"></div>
    <header>
-    <h1>HTML to JS converter</h1>
+    <h1>HTML to JS converter</h1><br>
+    <span class="fb-share-button" data-href="https://htmltojs.com/index.html" data-layout="button_count">
+    </span>
     <hr>
       <p>
-        This app can parse HTML to JavaScript (DOM). Including class names, ids, data attributes, text content, etc.
+        This application can convert HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.
       </p>
+      <p style="position: absolute; visibility: hidden;">In 2020-21, I was developing several SPA in native <strong>JavaScript</strong>. Initially, I created all page components in <strong>HTML</strong>, and later it was necessary to transfer all the code or its fragments to the [name] .js file by creating DOM nodes: document.createElement ('div');
+        DOM modifications are key to creating live pages, but transferring code from HTML to js is monotonous and tedious. createElement () => element.addClassList () => element.setAttrubute () => element.textContent => document.appendChild (). It took a lot of time; sometimes, it was necessary to write thousands of lines of monotonous code. Naturally, I googled a lot and looked for a solution on Stack Overflow. I needed an online service that works the same way as Sass to CSS or Pug to HTML, only to convert the HTML code to DOM nodes. As it turned out, many novice developers are looking for such a service, but all online HTML to JS converters that I managed to find work using the document.write() method. Then I wrote my converter, which converts HTML to JS with all the attributes, classes, and text content, and creates a DOM tree that fully corresponds to the nesting of tags in the HTML file. I have already used it on several projects; it saves time, the development of SPA in vanilla JavaScript has become less routine. What took me hours began to take a second.
+        The App code was on my GitHub for half a year. Now I decided to share the application and made a deployment on a separate hosting under the htmltojs.com domain</p>
       <ul class="tutorial">
-        <li>Copy snippet or full HTML code from your editor</li>
-        <li>Paste it into HTML textarea</li>
-        <li>Click the arrow to convert</li>
-        <li>Copy result from JavaScript textarea and paste in your file .js</li>
-        <li>By default, the app append elements to the document.body</li>
-        <li>Element name = tag name + random id</li>
+        <li>Copy a snippet or complete HTML code from your editor.</li>
+        <li> Paste it into an HTML text area.</li>
+        <li>Click the arrow to convert.</li>
+        <li>Copy the results from the JavaScript text area and paste them into your .js file.</li>
+        <li>By default, the App adds elements to document.body.</li>
+        <li>Element name = tag name + random identifier.</li>
       </ul>
   </header>
   <main>
     <div class="flex-container">
       <div>
         <h2>HTML</h2>
+        <img style="position: absolute; visibility: hidden;" src="icons/html.svg" alt="html">
+        <p style="position: absolute; visibility: hidden;">The HTML code from this window is carefully parsing using an algorithm specially designed to create DOM nodes in JavaScript.
+          First, the algorithm determines whether the code in the window is HTML code. It then finds and extracts the code between the boby tags and divides it into lines.
+          The next step is to parse each string: the paired or unpaired HTML tag
+          (abbr, acronym, address, applet, area, article, aside, audio, b, base, basefont, bdi, bdo, bgsound, big, blink, blockquote, body, br, button, canvas, caption, center, cite, code, col, colgroup, content, data, datalist, dd, decorator, del, details, dfn, dir, div, dl, dt, element, em, embed, fieldset, figcaption, figure, font, footer, form, frame, frameset, h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, html, i, iframe, img, input, ins, isindex, kbd, keygen, label, legend, li, link, listing, main, map, mark, marquee, menu, menuitem, meta, meter, nav, nobr, noframes, noscript, object, ol, optgroup, option, output, p, param, plaintext, pre, progress, q, rp, rt, ruby, s, samp, script, section, select, shadow, small, source, spacer, span, strike, strong, style, sub, summary, sup, table, tbody, td, template, textarea, tfoot, th, thead, time, title, tr, track, tt, u, ul, var, video, wbr, xmp),
+          whether it contains any attributes and classes, determines the text and graphic content between the opening and closing tags.
+          If the algorithm finds an image or a link, it determines the value of its src or href, alt, title, width, height, etc. After analyzing all the attributes
+          (accept, accept-charset, accesskey, action, align, allow, alt, async, autocapitalize, autocomplete, autofocus, autoplay, background, bgcolor, border, buffered, capture, challenge, charset, checked, cite, class, code, codebase, color, cols, colspan, content, contenteditable, contextmenu, controls, coords, crossorigin, csp, data, data-*, datetime, decoding, default, defer, dir, dirname, disabled, download, draggable, enctype, enterkeyhint, for, form, formaction, formenctype, formmethod, formnovalidate, formtarget, headers, height, hidden, high, href, hreflang, http-equiv, icon, id, importance, integrity, intrinsicsize, inputmode, ismap, itemprop, keytype, kind, label, lang, language, loading, list, loop, low, manifest, max, maxlength, minlength, media, method, min, multiple, muted, name, novalidate, open, optimum, pattern, ping, placeholder, poster, preload, radiogroup, readonly, referrerpolicy, rel, required, reversed, rows, rowspan, sandbox, scope, scoped, selected, shape, size, sizes, slot, span, spellcheck, src, srcdoc, srclang, srcset, start, step, style, summary, tabindex, target, title, translate, type, usemap, value, width, wrap),
+          CSS class names, etc., the algorithm recognizes all parent and child elements relative to the analyzed component.
+          Based on this data, later will create a DOM tree in JavaScript.</p>
         <textarea id="text-box" cols="60" rows="16" spellcheck="false" placeholder="HTML" class="input"></textarea>
       </div>
       <div class="tooltip">
@@ -36,6 +88,7 @@
     <div class="flex-container">
       <div>
          <h2>JS</h2>
+         <img style="position: absolute; visibility: hidden;" src="icons/javascript.svg" alt="javascript">
         <textarea readonly cols="60" rows="16" spellcheck="false" placeholder="JS" class="output"></textarea>
       </div>
       <div class="tooltip">
@@ -56,6 +109,12 @@
       <p class="asign">2021 Boris Krasko</p>
    </div>
   </footer>
-<body>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 </body>
 </html>
