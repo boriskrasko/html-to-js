@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-const inputHtml = document.querySelector('.input');
-const outputJavaScript = document.querySelector('.output');
+const inputHtml = document.querySelector('.input code');
+const outputJavaScript = document.querySelector('.output code');
 const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
 const tooltip = document.getElementById('myTooltip');
@@ -67,11 +67,11 @@ const createId = (length) => {
 };
 
 const getStringFromHtmlCode = () => {
-  stringFromHtmlCode = inputHtml.value.slice(0, lastCharOfString);
+  stringFromHtmlCode = inputHtml.innerText.slice(0, lastCharOfString);
 };
 
 const removeFirstStringFromHtml = () => {
-  inputHtml.value = inputHtml.value.replace(`${stringFromHtmlCode}\n`, '');
+  inputHtml.innerText = inputHtml.innerText.replace(`${stringFromHtmlCode}\n`, '');
   getStringFromHtmlCode();
 };
 
@@ -99,11 +99,7 @@ const getName = () => {
 
 const createDOMElement = () => {
   getName();
-  if (tagName === 'img') {
-    outputJavaScript.value += `const ${name} = new Image();\n`;
-  } else {
-    outputJavaScript.value += `const ${name} = document.createElement('${tagName}');\n`;
-  }
+  outputJavaScript.innerHTML += `<span class="decl">const</span> ${name} <span class="equal">=</span> document.<span class="method">createElement</span>(<span class="tagname">'${tagName}'</span>);\n`;
   trimmedString = trimmedString.replace(`${tagName}`, '');
 };
 
@@ -141,23 +137,23 @@ const checkClassesCount = () => {
 
 const addChildToParent = () => {
   if (parent === undefined) parent = 'document.body';
-  outputJavaScript.value += `${parent}.appendChild(${name});\n`;
+  outputJavaScript.innerHTML += `${parent}.<span class="method">appendChild</span>(${name});\n`;
   getParent();
   removeFirstStringFromHtml();
-  getLastCharOfString(inputHtml.value);
+  getLastCharOfString(inputHtml.innerText);
   getStringFromHtmlCode();
   checkOpeningTag();
 };
 
 const addTextContentToElement = () => {
   if (textContent.indexOf('&#') === -1) {
-    outputJavaScript.value += `${parent}.textContent += \`${textContent}\`;\n`;
+    outputJavaScript.innerHTML += `${parent}.<span class="property">textContent</span> <span class="equal">+=</span> \`<span class="value">${textContent}\`<span>;\n`;
   } else {
-    outputJavaScript.value += `${parent}.innerHTML += \`${textContent}\`;\n`;
+    outputJavaScript.innerHTML += `${parent}..<span class="property">innerHTML</span> <span class="equal">+=</span> \`<span class="value">${textContent}\`<span>;\n`;
   }
   if (trimmedString[0] !== '<') {
     removeFirstStringFromHtml();
-    getLastCharOfString(inputHtml.value);
+    getLastCharOfString(inputHtml.innerText);
     getStringFromHtmlCode();
     checkOpeningTag();
   } else {
@@ -186,12 +182,12 @@ const checkAttributesWithoutValue = () => {
     attr = trimmedString.slice(0, trimmedString.indexOf(' '));
     trimmedString = trimmedString.replace(attr, '');
     trimmedString = trimmedString.trim();
-    outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`;
+    outputJavaScript.innerHTML += `${name}.setAttribute('${attr}', '');\n`;
     checkAttributesWithoutValue();
   } else {
     attr = trimmedString;
     if (attr !== '/') {
-      outputJavaScript.value += `${name}.setAttribute('${attr}', '');\n`;
+      outputJavaScript.innerHTML += `${name}.<span class="method">setAttribute</span>('<span class="value">${attr}'</span>, '');\n`;
     }
     trimmedString = trimmedString.replace(attr, '');
     trimmedString = trimmedString.trim();
@@ -211,7 +207,7 @@ const checkAttributes = () => {
 const addClassToElement = () => {
   className.trim();
   if (className.length !== 0) {
-    outputJavaScript.value += `${name}.classList.add('${className}');\n`;
+    outputJavaScript.innerHTML += `${name}.<span class="property">classList</span>.<span class="method">add</span>(<span class="value">'${className}'<span>);\n`;
     trimmedString = trimmedString.replace(`class="${classContentBeforeTrimming}"`, '');
     checkAttributes();
   } else {
@@ -238,16 +234,16 @@ const getClassNames = () => {
 
 const addAttrToElement = () => {
   if (attrName === 'id') {
-    outputJavaScript.value += `${name}.id = '${attrValue}';\n`;
+    outputJavaScript.innerHTML += `${name}.<span class="property">id<span> <span class="equal">=</span> <span class="value">'${attrValue}'</span>;\n`;
   } else if (attrName === 'href') {
-    outputJavaScript.value += `${name}.href = '${attrValue}';\n`;
+    outputJavaScript.innerHTML += `${name}.<span class="property">href</span> <span class="equal">=</span> <span class="value">'${attrValue}'</span>;\n`;
   } else {
-    outputJavaScript.value += `${name}.setAttribute(\`${attrName}\`, \`${attrValue}\`);\n`;
+    outputJavaScript.innerHTML += `${name}.<span class="method">setAttribute</span>(<span class="value">\'${attrName}\', \'${attrValue}\'<span class="value">);\n`;
   }
 };
 
 const addSrcToElement = () => {
-  outputJavaScript.value += `${name}.src = '${attrValue}';\n`;
+  outputJavaScript.innerHTML += `${name}.<span class="property">src</span> <span class="equal">=</span> <span class="value">'${attrValue}'</span>;\n`;
 };
 
 const addStyleToElement = () => {
@@ -264,7 +260,7 @@ const addStyleToElement = () => {
       }
       propertyValue = declarations[declarations.length - 1][1].trim();
       declarations.pop();
-      outputJavaScript.value += `${name}.style.${property} = '${propertyValue}';\n`;
+      outputJavaScript.innerHTML += `${name}.<span class="property">style.${property}</span> <span class="equal">=</span> <span class="value">'${propertyValue}'</span>;\n`;
     } else {
       declarations.pop();
     }
@@ -346,7 +342,7 @@ const getOpeningTag = () => {
       createDOMElement();
       getAttr();
     } else if (tagName[0] !== '/') {
-      outputJavaScript.value += 'Incorrect tag name\n';
+      outputJavaScript.innerHTML += 'Incorrect tag name\n';
     }
   }
 };
@@ -359,13 +355,13 @@ checkOpeningTag = () => {
     stackOfClosingTags.pop();
     parent = stackOfClosingTags[stackOfClosingTags.length - 1];
     removeFirstStringFromHtml();
-    getLastCharOfString(inputHtml.value);
+    getLastCharOfString(inputHtml.innerText);
     getStringFromHtmlCode();
     checkOpeningTag();
   } else {
     trimString();
     if (trimmedString.indexOf('Done') !== -1) {
-      outputJavaScript.value += '';
+      outputJavaScript.innerHTML += '';
     } else if (trimmedString[0] !== '<') {
       checkTextContent();
     } else {
@@ -387,52 +383,52 @@ const outFunc = () => {
 };
 
 const clearInputHtmlValue = () => {
-  if (inputHtml.value.indexOf('Done!') !== -1) inputHtml.value = '';
+  if (inputHtml.innerText.indexOf('Done!') !== -1) inputHtml.innerText = '';
 };
 
 const getBody = () => {
-  if (inputHtml.value.indexOf('<body') !== -1) {
-    const startIndex = inputHtml.value.indexOf('>', inputHtml.value.indexOf('<body') + 5);
-    const endIndex = (inputHtml.value.indexOf('<script', startIndex) !== -1)
-      ? inputHtml.value.indexOf('<script')
-      : inputHtml.value.lastIndexOf('</body>');
-    inputHtml.value = inputHtml.value.slice(startIndex + 1, endIndex);
+  if (inputHtml.innerText.indexOf('<body') !== -1) {
+    const startIndex = inputHtml.innerText.indexOf('>', inputHtml.innerText.indexOf('<body') + 5);
+    const endIndex = (inputHtml.innerText.indexOf('<script', startIndex) !== -1)
+      ? inputHtml.innerText.indexOf('<script')
+      : inputHtml.innerText.lastIndexOf('</body>');
+    inputHtml.innerText = inputHtml.innerText.slice(startIndex + 1, endIndex);
   }
 };
 
 const removeComments = () => {
   while (firstIndexOfComment !== -1) {
-    firstIndexOfComment = inputHtml.value.indexOf('<!--');
-    lastIndexOfComment = inputHtml.value.indexOf('-->') + 4;
-    comment = inputHtml.value.slice(firstIndexOfComment, lastIndexOfComment);
-    inputHtml.value = inputHtml.value.replace(comment, '');
+    firstIndexOfComment = inputHtml.innerText.indexOf('<!--');
+    lastIndexOfComment = inputHtml.innerText.indexOf('-->') + 4;
+    comment = inputHtml.innerText.slice(firstIndexOfComment, lastIndexOfComment);
+    inputHtml.innerText = inputHtml.innerText.replace(comment, '');
   }
 };
 
 const clearResultArea = () => {
-  outputJavaScript.value = '';
+  outputJavaScript.innerHTML = '';
 };
 
 const addLineBreaks = () => {
-  inputHtml.value = inputHtml.value.replace(/</gi, '\n<');
-  inputHtml.value = inputHtml.value.replace(/>/gi, '>\n');
+  inputHtml.innerText = inputHtml.innerText.replace(/</gi, '\n<');
+  inputHtml.innerText = inputHtml.innerText.replace(/>/gi, '>\n');
 };
 
 const removeEmptyLines = () => {
-  inputHtml.value = inputHtml.value.replace(/^\s*[\r\n]/gm, '');
+  inputHtml.innerText = inputHtml.innerText.replace(/^\s*[\r\n]/gm, '');
 };
 
 const checkCodeStart = () => {
-  if (inputHtml.value[0] !== '<') {
-    outputJavaScript.value += 'Your code must start with the \'<\'\n';
-  } else if (inputHtml.value[1] === ' ') {
-    outputJavaScript.value += 'There can be no space after \'<\'\n';
+  if (inputHtml.innerText[0] !== '<') {
+    outputJavaScript.innerHTML += 'Your code must start with the \'<\'\n';
+  } else if (inputHtml.innerText[1] === ' ') {
+    outputJavaScript.innerHTML += 'There can be no space after \'<\'\n';
   } else {
-    inputHtml.value += 'Done!\n';
-    getLastCharOfString(inputHtml.value);
+    inputHtml.innerText += 'Done!\n';
+    getLastCharOfString(inputHtml.innerText);
     getStringFromHtmlCode();
     checkOpeningTag();
-    inputHtml.value = 'Done!';
+    inputHtml.innerText = 'Done!';
   }
 };
 
@@ -447,8 +443,8 @@ const prepare = () => {
 
 const logKey = (e) => {
   if (e.which === 27) {
-    inputHtml.value = '';
-    outputJavaScript.value = '';
+    inputHtml.innerText = '';
+    outputJavaScript.innerHTML = '';
   }
 };
 
