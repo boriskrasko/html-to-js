@@ -23,19 +23,20 @@
 }
 
 body {
-  max-width: 1440px;
+  max-width: 1048px;
   margin: 0 auto;
   font-family: Roboto, sans-serif;
+  border: 1px solid #eee;
 }
 
 h2 {
   margin: 0 10px;
-  color: #2e2e2e;
+  color: #1e1e1e;
   font-size: 28px;
 }
 
 h1 {
-  color: #2a2a2a;
+  color: #1e1e1e;;
 }
 
 pre {
@@ -57,10 +58,10 @@ code div {
 textarea,
 div[role=textarea] {
   width: 480px;
-  height: 480px;
+  height: 280px;
   margin: 10px 10px;
   color: #2a2a2a;
-  border: 1px solid rgb(228, 228, 226);
+  border: 2px solid rgb(228, 228, 226);
   border-radius: 6px;
   background: rgb(252, 252, 252);
   transition: 0.1s background ease-in-out;
@@ -70,12 +71,12 @@ div[role=textarea] {
 textarea:focus,
 div[role=textarea]:focus {
   outline: none;
-  border: 1px solid #aaa;
 }
 
 textarea:hover,
 div[role=textarea]:hover {
-  background: rgb(252, 252, 252);
+  background: rgb(250, 250, 252);
+  outline: 2px solid rgb(228, 228, 226);
 }
 
 button {
@@ -94,6 +95,7 @@ button {
 button:hover {
   background: #e4e4e4;
   border: 1px solid #f4f4f4
+  
 }
 
 button img:hover {
@@ -130,14 +132,13 @@ hr {
 }
 
 main {
-  width: 95%;
+  width: 100%;
   margin: 50px auto;
   padding: 10px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  border: 2px solid rgb(248, 248, 246);
-  background: rgb(224, 224, 224);
+  justify-content: space-around;
+  border: 1px solid rgb(248, 248, 246);
   border-radius: 8px;
 }
 
@@ -209,4 +210,20 @@ footer {
 @media screen and (max-width: 640px) {
   textarea {width: 95%; min-width: 300px;}
   main {width: 98%}
+}
+
+@media (max-width: 540px) {
+  textarea,
+  div[role=textarea] {
+    width: 100%;
+  }
+  .flex-container,
+  .flex-container div {
+    width: 100%;
+    margin: 10px auto;
+  }
+  .tooltip {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
