@@ -38,12 +38,27 @@ h1 {
   color: #2a2a2a;
 }
 
+pre {
+  height: 100%;
+  display: flex;
+}
+
+code {
+  outline: none;
+  height: 100%;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+code div {
+  background-color: transparent !important;
+}
+
 textarea,
 div[role=textarea] {
   width: 480px;
   height: 480px;
   margin: 10px 10px;
-  padding: 5px 10px;
   color: #2a2a2a;
   border: 1px solid rgb(228, 228, 226);
   border-radius: 6px;

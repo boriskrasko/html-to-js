@@ -371,11 +371,14 @@ checkOpeningTag = () => {
 };
 
 const copyResult = () => {
-  outputJavaScript.select();
-  outputJavaScript.setSelectionRange(0, 99999);
+  let input = document.createElement('textarea');
+  document.body.appendChild(input);
+  input.value = outputJavaScript.innerText;
+  input.select();
+  input.setSelectionRange(0, 99999);
   document.execCommand('copy');
-
   tooltip.innerHTML = 'Copied';
+  document.body.removeChild(input);
 };
 
 const outFunc = () => {
