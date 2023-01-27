@@ -1,6 +1,5 @@
 ## html-to-js converter
 
-# [htmltojs.com](https://htmltojs.com)
+# [htmltojs.com](https://boriskrasko.github.io/html-to-js/)
 
-![App](https://boriskrasko.github.io/html-to-js/pages/screen.png)
-
+![App](https://boriskrasko.github.io/html-to-js/pages/html-to-js_color.png)
