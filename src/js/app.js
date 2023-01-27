@@ -108,9 +108,9 @@ const checkClass = () => {
 };
 
 const getClassContent = () => {
-  const startIndex = trimmedString.indexOf('class="') + 7;
-  trimmedString = trimmedString.replace(/ +"/g, '"').trim();
-  classContent = trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex));
+    const startIndex = trimmedString.indexOf('class="') + 7;
+    trimmedString = trimmedString.replace(/ +"/g, '"').trim();
+    classContent = (trimmedString.includes('class="')) ? trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex)) : '';
 };
 
 const removeExtraSpacesFromClassContent = () => {
