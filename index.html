@@ -1,32 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+     })(window,document,'script','dataLayer','UA-170087148-1');</script>
+	<meta charset="utf-8">
+	<title>HTML to JavaScript online converter</title>
+  <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/faviconapple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/faviconfavicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML to JavaScript online converter</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>HTML to JS converter</h1>
+  <meta name="description" content="Online converter HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta name="keywords" content="HTML, JS, JavaScript, online converter, DOM, create element, append child, Node, attributtes, classes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta property="og:title" content="HTML to JS | online converter creating DOM (Document Object Model) Nodes">
+  <meta property="og:site_name" content="htmltojs.com">
+  <meta property="og:url" content="https://htmltojs.com">
+  <meta property="og:type" content="html-content">
+  <meta property="og:description" content="Online converter HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.">
+  <meta property="og:image" content="https://htmltojs.com/icons/logo.svg">
+  <link href="style.css" rel="stylesheet"></head>
+  <body>
+    <noscript><iframe class="gmp-noscript-iframe"
+      src="https://www.googletagmanager.com/ns.html?id=UA-170087148-1"></iframe></noscript>
+    <div id="fb-root"></div>
+   <header>
+    <h1>HTML to JS converter</h1><br>
+    <span class="fb-share-button" data-href="https://htmltojs.com/index.html" data-layout="button_count">
+    </span>
     <hr>
       <p>
-        This app can parse HTML to JavaScript (DOM). Including class names, ids, data attributes, text content, etc.
+        This application can convert HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.
       </p>
       <ul class="tutorial">
-        <li>Copy snippet or full HTML code from your editor</li>
-        <li>Paste it into HTML textarea</li>
-        <li>Click the arrow to convert</li>
-        <li>Copy result from JavaScript textarea and paste in your file .js</li>
-        <li>By default, the app append elements to the document.body</li>
-        <li>Element name = tag name + random id</li>
+        <li>Copy a snippet or complete HTML code from your editor.</li>
+        <li> Paste it into an HTML text area.</li>
+        <li>Click the arrow to convert.</li>
+        <li>Copy the results from the JavaScript text area and paste them into your .js file.</li>
+        <li>By default, the App adds elements to document.body.</li>
+        <li>Element name = tag name + random identifier.</li>
       </ul>
   </header>
   <main>
     <div class="flex-container">
       <div>
         <h2>HTML</h2>
-        <textarea id="text-box" cols="60" rows="16" spellcheck="false" placeholder="HTML" class="input"></textarea>
+        <div role="textarea" id="text-box"  spellcheck="false" placeholder="HTML" class="input"><pre><code contenteditable="true">
+</code></pre>
+        </div>
       </div>
       <div class="tooltip">
         <button class="convert-btn">
@@ -38,7 +77,8 @@
     <div class="flex-container">
       <div>
          <h2>JS</h2>
-        <textarea readonly cols="60" rows="16" spellcheck="false" placeholder="JS" class="output"></textarea>
+        <div role="textarea" readonly  spellcheck="false" placeholder="JS" class="output"><pre><code></code></pre>
+        </div>
       </div>
       <div class="tooltip">
         <button class="copy-btn">
@@ -58,6 +98,5 @@
       <p class="asign">2021 Boris Krasko</p>
    </div>
   </footer>
-  <script src="main.js"></script>
-</body>
+<script src="main.js"></script></body>
 </html>
