@@ -5,7 +5,7 @@ const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
 const tooltip = document.getElementById('myTooltip');
 
-const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'source', 'track', 'wbr'];
+const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'path', 'source', 'track', 'wbr'];
 const declarations = [];
 const stackOfClosingTags = [];
 
@@ -99,7 +99,11 @@ const getName = () => {
 
 const createDOMElement = () => {
   getName();
-  outputJavaScript.innerHTML += `<span class="decl">const</span> ${name} <span class="equal">=</span> document.<span class="method">createElement</span>(<span class="tagname">'${tagName}'</span>);\n`;
+  if (tagName === 'svg' || (parent && parent.includes('svg'))) {
+    outputJavaScript.innerHTML += `<span class="decl">const</span> ${name} <span class="equal">=</span> document.<span class="method">createElementNS</span>(<span class="tagname">'http://www.w3.org/2000/svg', '${tagName}'</span>);\n`;
+  } else {
+    outputJavaScript.innerHTML += `<span class="decl">const</span> ${name} <span class="equal">=</span> document.<span class="method">createElement</span>(<span class="tagname">'${tagName}'</span>);\n`;
+  }
   trimmedString = trimmedString.replace(`${tagName}`, '');
 };
 
@@ -455,7 +459,4 @@ copyBtn.addEventListener('click', copyResult);
 copyBtn.addEventListener('mouseout', outFunc);
 inputHtml.addEventListener('click', clearInputHtmlValue);
 document.addEventListener('keydown', logKey);
-
-convertBtn.addEventListener('click', () => {
-  prepare();
-});
+convertBtn.addEventListener('click', prepare);
