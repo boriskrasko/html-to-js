@@ -3,7 +3,7 @@ const inputHtml = document.querySelector('.input code');
 const outputJavaScript = document.querySelector('.output code');
 const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
-const tooltip = document.getElementById('myTooltip');
+const toggleSwitch = document.querySelector('.toggle-switch');
 
 const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'path', 'source', 'track', 'wbr'];
 const declarations = [];
@@ -381,12 +381,9 @@ const copyResult = () => {
   input.select();
   input.setSelectionRange(0, 99999);
   document.execCommand('copy');
-  tooltip.innerHTML = 'Copied';
   document.body.removeChild(input);
-};
-
-const outFunc = () => {
-  tooltip.innerHTML = 'Copy to clipboard';
+  copyBtn.firstChild.textContent = 'copied'
+  setTimeout(() => copyBtn.firstChild.textContent = 'copy', 1000)
 };
 
 const clearInputHtmlValue = () => {
@@ -446,6 +443,8 @@ const prepare = () => {
   addLineBreaks();
   removeEmptyLines();
   checkCodeStart();
+  copyBtn.firstChild.textContent = 'copy'
+
 };
 
 const logKey = (e) => {
@@ -455,8 +454,12 @@ const logKey = (e) => {
   }
 };
 
+const changeTheme = () => {
+  document.body.toggleAttribute('light');
+}
+
 copyBtn.addEventListener('click', copyResult);
-copyBtn.addEventListener('mouseout', outFunc);
 inputHtml.addEventListener('click', clearInputHtmlValue);
 document.addEventListener('keydown', logKey);
 convertBtn.addEventListener('click', prepare);
+toggleSwitch.addEventListener('change', changeTheme);
