@@ -1,102 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-     })(window,document,'script','dataLayer','UA-170087148-1');</script>
-	<meta charset="utf-8">
-	<title>HTML to JavaScript online converter</title>
-  <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/faviconapple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="/faviconfavicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-  <link rel="manifest" href="favicon/manifest.json">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Online converter HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.">
-  <meta name="robots" content="index, follow">
-  <meta name="googlebot" content="index, follow">
-  <meta name="keywords" content="HTML, JS, JavaScript, online converter, DOM, create element, append child, Node, attributtes, classes">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta property="og:title" content="HTML to JS | online converter creating DOM (Document Object Model) Nodes">
-  <meta property="og:site_name" content="htmltojs.com">
-  <meta property="og:url" content="https://htmltojs.com">
-  <meta property="og:type" content="html-content">
-  <meta property="og:description" content="Online converter HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.">
-  <meta property="og:image" content="https://htmltojs.com/icons/logo.svg">
-  <link href="style.css" rel="stylesheet"></head>
+<html lang="en"><head><link href="style.css" rel="stylesheet"></head>
+  <head>
+    <meta charset="utf-8">
+    <title>HTML to JavaScript online converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <body>
-    <noscript><iframe class="gmp-noscript-iframe"
-      src="https://www.googletagmanager.com/ns.html?id=UA-170087148-1"></iframe></noscript>
-    <div id="fb-root"></div>
-   <header>
-    <h1>HTML to JS converter</h1><br>
-    <span class="fb-share-button" data-href="https://htmltojs.com/index.html" data-layout="button_count">
-    </span>
-    <hr>
-      <p>
-        This application can convert HTML to JavaScript (DOM). Including class names, identifiers, data attributes, text content, etc.
-      </p>
-      <ul class="tutorial">
-        <li>Copy a snippet or complete HTML code from your editor.</li>
-        <li> Paste it into an HTML text area.</li>
-        <li>Click the arrow to convert.</li>
-        <li>Copy the results from the JavaScript text area and paste them into your .js file.</li>
-        <li>By default, the App adds elements to document.body.</li>
-        <li>Element name = tag name + random identifier.</li>
-      </ul>
-  </header>
-  <main>
-    <div class="flex-container">
-      <div>
-        <h2>HTML</h2>
-        <div role="textarea" id="text-box"  spellcheck="false" placeholder="HTML" class="input"><pre><code contenteditable="true">
+    <header class="header">
+      <h1>HTML to JS converter</h1>
+      <div class="toggle-switch">
+        <label>
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+    <main class="main">
+      <div class="container">
+        <header>
+          <span>HTML</span>
+          <button class="convert-btn"><span>convert </span>
+          <img src="icons/next.svg" alt="arrow">
+          <img src="icons/next.svg" alt="arrow">
+          <img src="icons/next.svg" alt="arrow">
+          </button>
+        </header>
+        <div role="textarea" id="text-box"  spellcheck="false" class="input">
+          <pre><code contenteditable="true">
 </code></pre>
         </div>
       </div>
-      <div class="tooltip">
-        <button class="convert-btn">
-          <span class="tooltiptext">Convert to JavaScript</span>
-          <img src="icons/next.svg" alt="arrow">
-        </button>
       </div>
-    </div>
-    <div class="flex-container">
-      <div>
-         <h2>JS</h2>
-        <div role="textarea" readonly  spellcheck="false" placeholder="JS" class="output"><pre><code></code></pre>
+      <div class="container">
+        <header>
+          <span style="color: var(--js);">JavaScript</span>
+          <button class="copy-btn"><span>copy</span>
+          <img src="icons/copy.svg" alt="copy">
+          </button>
+        </header>
+        <div role="textarea" readonly  spellcheck="false" class="output">
+          <pre><code></code></pre>
         </div>
       </div>
-      <div class="tooltip">
-        <button class="copy-btn">
-        <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-          <img src="icons/copy.svg" alt="copy">
-        </button>
+    </main>
+    <footer class="footer">
+      <div class="github">
+        <div class="github-logo">
+          <a href="https://github.com/boriskrasko">
+            <svg height="24" class="octicon" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true" fill="rgb(208, 213, 219)">
+              <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+            </svg>
+          </a>
+        </div>
+        <p class="asign">2021 Boris Krasko</p>
       </div>
-    </div>
-  </main>
-  <footer>
-   <div class="github">
-     <div class="github-logo">
-       <a href="https://github.com/boriskrasko">
-         <svg height="24" class="octicon" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true" fill="rgb(208, 213, 219)"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-       </a>
-     </div>
-      <p class="asign">2021 Boris Krasko</p>
-   </div>
-  </footer>
-<script src="main.js"></script></body>
+    </footer>
+  <script src="main.js"></script></body>
 </html>
