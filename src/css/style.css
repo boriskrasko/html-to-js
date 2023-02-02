@@ -11,6 +11,7 @@
   --code: #c9d1d9;
   --scrollbar-thumb: #345;
   --container-header: #0099EE;
+  --js: #d7ba7d;
 }
 
 [light] {
@@ -24,6 +25,7 @@
   --code: #24292f;
   --scrollbar-thumb: #66ace6;
   --container-header: #0089DE;
+  --js: #b79a5d;
 }
  
 ::-webkit-scrollbar,
@@ -103,7 +105,7 @@ code {
   white-space: pre;
 }
 
-code div {
+code * {
   background-color: transparent !important;
 }
 
@@ -123,6 +125,11 @@ button {
   background-color: transparent;
   display: inline-flex;
   align-self: center;
+  transition: 0.1s;
+}
+
+button:hover {
+  opacity: 0.8;
 }
 
 svg:hover {

@@ -382,6 +382,8 @@ const copyResult = () => {
   input.setSelectionRange(0, 99999);
   document.execCommand('copy');
   document.body.removeChild(input);
+  copyBtn.firstChild.textContent = 'copied'
+  setTimeout(() => copyBtn.firstChild.textContent = 'copy', 1000)
 };
 
 const clearInputHtmlValue = () => {
@@ -441,6 +443,8 @@ const prepare = () => {
   addLineBreaks();
   removeEmptyLines();
   checkCodeStart();
+  copyBtn.firstChild.textContent = 'copy'
+
 };
 
 const logKey = (e) => {
