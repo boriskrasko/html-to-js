@@ -3,6 +3,7 @@ const inputHtml = document.querySelector('.input code');
 const outputJavaScript = document.querySelector('.output code');
 const convertBtn = document.querySelector('.convert-btn');
 const copyBtn = document.querySelector('.copy-btn');
+const toggleSwitch = document.querySelector('.toggle-switch');
 
 const singletonTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'param', 'path', 'source', 'track', 'wbr'];
 const declarations = [];
@@ -449,7 +450,12 @@ const logKey = (e) => {
   }
 };
 
+const changeTheme = () => {
+  document.body.toggleAttribute('light');
+}
+
 copyBtn.addEventListener('click', copyResult);
 inputHtml.addEventListener('click', clearInputHtmlValue);
 document.addEventListener('keydown', logKey);
 convertBtn.addEventListener('click', prepare);
+toggleSwitch.addEventListener('change', changeTheme);
