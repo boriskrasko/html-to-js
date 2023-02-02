@@ -108,15 +108,6 @@ svg:hover {
   cursor: pointer;
 }
 
-footer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 20px;
-  padding: 4px;
-  align-items: center;
-}
-
 .asign {
   margin: 0 auto;
   color: #999;
@@ -134,23 +125,38 @@ footer {
 .main,
 .footer {
   min-height: 50px;
-  margin: 8px;
-  border-radius: 6px;
+  margin: 3px;
   overflow: hidden;
   display: flex;
   align-items: center;
   font-size: 12px;
 }
 
+.header {
+  margin-top: 4px;
+  border-radius: 6px 6px 0 0;
+}
+
 .header,
 .footer {
+  height: 9vh;
   background-color: rgb(1, 4, 10);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 4px;
+  padding: 4px;
+  align-items: center;
+  border-radius: 0 0 6px 6px;
 }
 
 .main {
   height: 80vh;
   display: flex;
-  column-gap: 8px;
+  column-gap: 3px;
 }
 
 .container {
@@ -158,7 +164,6 @@ footer {
   height: 100%;
   background-color: rgb(1, 4, 10);
   padding: 8px 8px 24px;
-  border-radius: 6px;
 }
 
 .container header {
@@ -170,7 +175,7 @@ footer {
 .container button {
   display: inline-flex;
   align-items: center;
-  column-gap: 2px;
+  column-gap: 3px;
 }
 
 @media screen and (max-width: 640px) {
@@ -181,6 +186,6 @@ footer {
 
   .main {
     flex-wrap: wrap;
-    row-gap: 8px;
+    row-gap: 3px;
   }
 }
