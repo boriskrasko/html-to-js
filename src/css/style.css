@@ -124,8 +124,9 @@ button {
   color: var(--container-header);
   background-color: transparent;
   display: inline-flex;
-  align-self: center;
+  align-items: flex-start;
   transition: 0.1s;
+  padding: 0 4px 12px;
 }
 
 button:hover {
