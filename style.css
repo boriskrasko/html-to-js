@@ -124,8 +124,9 @@ button {
   color: var(--container-header);
   background-color: transparent;
   display: inline-flex;
-  align-self: center;
+  align-items: flex-start;
   transition: 0.1s;
+  padding: 0 4px 12px;
 }
 
 button:hover {
@@ -135,12 +136,6 @@ button:hover {
 svg:hover {
   fill: var(--container-header);
   cursor: pointer;
-}
-
-.asign {
-  margin: 0 auto;
-  color: #999;
-  font-size: 12px;
 }
 
 .github {
@@ -221,6 +216,20 @@ svg:hover {
   .main {
     flex-wrap: wrap;
     row-gap: 3px;
+  }
+
+  .header,
+  .main,
+  .footer,
+  button,
+  code {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .header {
+    height: auto;
   }
 }
 
