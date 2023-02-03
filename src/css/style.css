@@ -217,6 +217,14 @@ svg:hover {
     flex-wrap: wrap;
     row-gap: 3px;
   }
+
+  .header,
+  .main,
+  .footer,
+  button,
+  code {
+    font-size: 16px;
+  }
 }
 
 .toggle-switch {
