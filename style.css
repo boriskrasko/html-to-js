@@ -223,6 +223,10 @@ svg:hover {
     padding: 8px 16px 28px;
   }
 
+  .header {
+    height: auto;
+  }
+
   .main {
     flex-wrap: wrap;
     row-gap: 3px;
@@ -288,4 +292,3 @@ input:checked ~ .slider::before {
   background-color: var(--dark);
   box-shadow: none;
 }
-
