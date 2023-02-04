@@ -12,6 +12,7 @@
   --scrollbar-thumb: #345;
   --container-header: #0099EE;
   --js: #d7ba7d;
+  --container-outline: rgb(0, 111, 200);
 }
 
 [light] {
@@ -26,6 +27,8 @@
   --scrollbar-thumb: #66ace6;
   --container-header: #0089DE;
   --js: #b79a5d;
+  --container-outline: rgb(100, 100, 255);
+
 }
  
 ::-webkit-scrollbar,
@@ -185,14 +188,20 @@ svg:hover {
 .main {
   height: 77vh;
   display: flex;
-  column-gap: 3px;
+  column-gap: 6px;
+  padding: 1px;
 }
 
 .container {
   width: 50%;
-  height: 100%;
+  height: 99%;
   background-color: var(--container-bg);
   padding: 8px 16px 24px;
+  transition: 0.2s box-shadow;
+}
+
+.container:hover {
+  box-shadow: 0 0 1px 0.5px var(--container-outline);
 }
 
 .container header {
@@ -210,7 +219,8 @@ svg:hover {
 @media screen and (max-width: 640px) {
   .container {
     width: 100%;
-    height: 50%
+    height: 49.5%;
+    padding: 8px 16px 28px;
   }
 
   .main {
@@ -227,19 +237,13 @@ svg:hover {
   }
 }
 
-@media screen and (max-width: 500px) {
-  .header {
-    height: auto;
-  }
-}
-
 .toggle-switch {
   position: relative;
   width: 42px;
   height: 21px;
 }
 
-label {
+.toggle-switch label {
   position: absolute;
   width: 100%;
   height: 20px;
@@ -248,12 +252,12 @@ label {
   cursor: pointer;
 }
 
-input {
+.toggle-switch input {
   position: absolute;
   display: none;
 }
 
-.slider {
+.toggle-switch .slider {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -262,11 +266,11 @@ input {
   box-shadow: 0 0 1px 0.2px var(--container-bg);
 }
 
-input:checked ~ .slider {
+.toggle-switch input:checked ~ .slider {
   background-color: var(--light);
 }
 
-.slider::before {
+.toggle-switch .slider::before {
   content: "";
   position: absolute;
   top: 2px;
