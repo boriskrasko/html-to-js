@@ -228,6 +228,10 @@ svg:hover {
     row-gap: 3px;
   }
 
+  .header {
+    height: auto;
+  }
+
   .header,
   .main,
   .footer,
