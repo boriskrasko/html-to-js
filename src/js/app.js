@@ -112,9 +112,9 @@ const checkClass = () => {
 };
 
 const getClassContent = () => {
-    const startIndex = trimmedString.indexOf('class="') + 7;
-    trimmedString = trimmedString.replace(/ +"/g, '"').trim();
-    classContent = (trimmedString.includes('class="')) ? trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex)) : '';
+  const startIndex = trimmedString.indexOf('class="') + 7;
+  trimmedString = trimmedString.replace(/ +"/g, '"').trim();
+  classContent = (trimmedString.includes('class="')) ? trimmedString.slice(startIndex, trimmedString.indexOf('"', startIndex)) : '';
 };
 
 const removeExtraSpacesFromClassContent = () => {
@@ -242,7 +242,7 @@ const addAttrToElement = () => {
   } else if (attrName === 'href') {
     outputJavaScript.innerHTML += `${name}.<span class="property">href</span> <span class="equal">=</span> <span class="value">'${attrValue}'</span>;\n`;
   } else {
-    outputJavaScript.innerHTML += `${name}.<span class="method">setAttribute</span>(<span class="value">\'${attrName}\', \'${attrValue}\'<span class="value">);\n`;
+    outputJavaScript.innerHTML += `${name}.<span class="method">setAttribute</span>(<span class="value">\\'${attrName}\\', \\'${attrValue}\\'<span class="value">);\n`;
   }
 };
 
@@ -355,7 +355,6 @@ checkOpeningTag = () => {
   getTrimmedString();
   createId(5);
   if (trimmedString[1] === '/') {
-    // getParent();
     stackOfClosingTags.pop();
     parent = stackOfClosingTags[stackOfClosingTags.length - 1];
     removeFirstStringFromHtml();
@@ -375,15 +374,16 @@ checkOpeningTag = () => {
 };
 
 const copyResult = () => {
-  let input = document.createElement('textarea');
+  const input = document.createElement('textarea');
   document.body.appendChild(input);
   input.value = outputJavaScript.innerText;
   input.select();
   input.setSelectionRange(0, 99999);
   document.execCommand('copy');
   document.body.removeChild(input);
-  copyBtn.firstChild.textContent = 'copied'
-  setTimeout(() => copyBtn.firstChild.textContent = 'copy', 1000)
+  copyBtn.firstChild.textContent = 'copied';
+  // eslint-disable-next-line no-return-assign
+  setTimeout(() => copyBtn.firstChild.textContent = 'copy', 1000);
 };
 
 const clearInputHtmlValue = () => {
@@ -443,8 +443,7 @@ const prepare = () => {
   addLineBreaks();
   removeEmptyLines();
   checkCodeStart();
-  copyBtn.firstChild.textContent = 'copy'
-
+  copyBtn.firstChild.textContent = 'copy';
 };
 
 const logKey = (e) => {
@@ -456,7 +455,7 @@ const logKey = (e) => {
 
 const changeTheme = () => {
   document.body.toggleAttribute('light');
-}
+};
 
 copyBtn.addEventListener('click', copyResult);
 inputHtml.addEventListener('click', clearInputHtmlValue);
