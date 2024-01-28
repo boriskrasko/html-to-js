@@ -200,8 +200,8 @@ svg:hover {
   transition: 0.2s box-shadow;
 }
 
-.container:hover {
-  box-shadow: 0 0 1px 0.5px var(--container-outline);
+.container:focus-within {
+  box-shadow: 0 0 1px 0.1px var(--container-outline);
 }
 
 .container header {
