@@ -258,7 +258,7 @@ const addAttrToElement = () => {
   } else if (attrName === 'href') {
     outputJavaScript.innerHTML += `${name}.<span class="property">href</span> <span class="equal">=</span> <span class="value">'${attrValue}'</span>;\n`;
   } else {
-    outputJavaScript.innerHTML += `${name}.<span class="method">setAttribute</span>(<span class="value">\\'${attrName}\\', \\'${attrValue}\\'<span class="value">);\n`;
+    outputJavaScript.innerHTML += `${name}.<span class="method">setAttribute</span>(<span class="value">'${attrName}', '${attrValue}'<span class="value">);\n`;
   }
 };
 
